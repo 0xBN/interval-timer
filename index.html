@@ -23,10 +23,513 @@
       --muted: #444;
       --sub: #777;
       --text: #f0f0f0;
-      --prepare: #d4621a;
-      --work: #1a9e3a;
-      --rest: #1a5abf;
+      --prepare: #ffb800;
+      --work: #00e64d;
+      --rest: #4da6ff;
       --r: 10px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden
+    }
+
+    /* ── HOME ── */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column
+    }
+
+    .home-header {
+      padding: 20px 16px 12px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .home-wordmark {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      letter-spacing: 2px;
+      color: var(--text);
+      line-height: 1
+    }
+
+    .home-sub {
+      font-size: 11px;
+      color: var(--sub);
+      margin-top: 2px;
+      letter-spacing: .08em
+    }
+
+    .home-body {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      padding-bottom: 40px
+    }
+
+    .section-lbl {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      margin: 20px 0 10px
+    }
+
+    .section-lbl:first-child {
+      margin-top: 0
+    }
+
+    /* routine card */
+    .routine-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color .15s;
+      user-select: none;
+    }
+
+    .routine-card:active {
+      border-color: var(--sub)
+    }
+
+    .routine-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .routine-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text)
+    }
+
+    .routine-meta {
+      font-size: 11px;
+      color: var(--sub);
+      margin-top: 3px
+    }
+
+    .routine-dur {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: var(--muted);
+      flex-shrink: 0;
+      line-height: 1
+    }
+
+    .play-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--text);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* block pips */
+    .pip-row {
+      display: flex;
+      gap: 3px;
+      margin-top: 6px;
+      flex-wrap: wrap
+    }
+
+    .pip {
+      height: 5px;
+      border-radius: 3px;
+      flex: 1;
+      max-width: 32px;
+      min-width: 5px
+    }
+
+    .pip.prepare {
+      background: var(--prepare);
+      opacity: .8
+    }
+
+    .pip.work {
+      background: var(--work)
+    }
+
+    .pip.rest {
+      background: var(--rest);
+      opacity: .7
+    }
+
+    /* json paste */
+    .paste-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 8px
+    }
+
+    .paste-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      cursor: pointer
+    }
+
+    .paste-hdr-lbl {
+      font-size: 12px;
+      color: var(--sub)
+    }
+
+    .paste-toggle {
+      color: var(--sub);
+      font-size: 20px;
+      line-height: 1
+    }
+
+    .paste-body {
+      display: none;
+      padding: 12px;
+      border-top: 1px solid var(--border)
+    }
+
+    .paste-body.open {
+      display: block
+    }
+
+    textarea.paste-input {
+      width: 100%;
+      min-height: 140px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    textarea.paste-input:focus {
+      outline: none;
+      border-color: var(--sub)
+    }
+
+    .paste-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px
+    }
+
+    .paste-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .paste-btn.run {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text)
+    }
+
+    .paste-btn:active {
+      opacity: .8
+    }
+
+    .paste-err {
+      font-size: 11px;
+      color: #ff4444;
+      margin-top: 6px;
+      display: none
+    }
+
+    .paste-err.show {
+      display: block
+    }
+
+    /* ── TIMER SCREEN ── */
+    #timerScreen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 120px;
+    }
+
+    #timerScreen.active {
+      display: flex
+    }
+
+    .timer-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      transition: background .4s ease;
+    }
+
+    .timer-bg.prepare {
+      background: #b87200
+    }
+
+    .timer-bg.work {
+      background: #006b28
+    }
+
+    .timer-bg.rest {
+      background: #174480
+    }
+
+    .timer-type {
+      font-size: 13px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      transition: color .3s;
+      font-weight: 500;
+      color: rgba(255, 255, 255, .75);
+    }
+
+    .timer-type.prepare {
+      color: rgba(255, 255, 255, .75)
+    }
+
+    .timer-type.work {
+      color: rgba(255, 255, 255, .75)
+    }
+
+    .timer-type.rest {
+      color: rgba(255, 255, 255, .75)
+    }
+
+    .timer-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 9vw, 54px);
+      letter-spacing: 1px;
+      line-height: 1;
+      text-align: center;
+      margin-bottom: 12px;
+      min-height: 54px;
+      color: #fff;
+    }
+
+    .timer-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(140px, 38vw, 220px);
+      line-height: .85;
+      letter-spacing: -6px;
+      text-align: center;
+      transition: color .2s, font-size .15s;
+    }
+
+    .timer-num.prepare {
+      color: #fff
+    }
+
+    .timer-num.work {
+      color: #fff
+    }
+
+    .timer-num.rest {
+      color: #fff
+    }
+
+    /* countdown: big white number, extra large */
+    .timer-num.countdown {
+      font-size: clamp(200px, 52vw, 300px)
+    }
+
+    .timer-set {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .6);
+      margin-top: 16px;
+      letter-spacing: .08em
+    }
+
+    .timer-next {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .45);
+      margin-top: 6px
+    }
+
+    .timer-next span {
+      color: rgba(255, 255, 255, .65)
+    }
+
+    /* progress bar */
+    .timer-prog-wrap {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: rgba(0, 0, 0, .3)
+    }
+
+    .timer-prog-fill {
+      height: 100%;
+      transition: width .1s linear, background .3s
+    }
+
+    .timer-prog-fill.prepare {
+      background: rgba(255, 255, 255, .5)
+    }
+
+    .timer-prog-fill.work {
+      background: rgba(255, 255, 255, .5)
+    }
+
+    .timer-prog-fill.rest {
+      background: rgba(255, 255, 255, .5)
+    }
+
+    /* pause overlay when paused */
+    .timer-paused-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      background: rgba(0, 0, 0, .55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      letter-spacing: 6px;
+      color: rgba(255, 255, 255, .4);
+    }
+
+    .timer-paused-overlay.show {
+      display: flex
+    }
+
+    /* big center pause button */
+    .pause-center {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .08);
+      border: 2px solid rgba(255, 255, 255, .2);
+      color: var(--text);
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .15s;
+    }
+
+    .pause-center:active {
+      transform: translateX(-50%) scale(.92)
+    }
+
+    .pause-center.paused {
+      background: rgba(255, 255, 255, .15);
+      border-color: rgba(255, 255, 255, .5)
+    }
+
+    /* corner nav buttons */
+    .nav-back {
+      background: rgba(0, 0, 0, .3);
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .7);
+      position: fixed;
+      bottom: 24px;
+      left: 20px;
+      z-index: 10;
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--sub);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-skip {
+      background: rgba(0, 0, 0, .3);
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .7);
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      z-index: 10;
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--sub);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* stop button — top right, hold to activate */
+    .stop-btn {
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top));
+      right: 16px;
+      z-index: 20;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, .2);
+      background: rgba(0, 0, 0, .3);
+      color: rgba(255, 255, 255, .6);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .stop-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(#ff4444 0deg, transparent 0deg);
+    }
+
+    .stop-icon {
+      position: relative;
+      z-index: 1;
+      font-size: 13px
     }
 
     body {
@@ -291,15 +794,15 @@
     }
 
     .timer-bg.prepare {
-      background: rgba(212, 98, 26, .18)
+      background: #b87200
     }
 
     .timer-bg.work {
-      background: rgba(26, 158, 58, .18)
+      background: #006b28
     }
 
     .timer-bg.rest {
-      background: rgba(26, 90, 191, .18)
+      background: #174480
     }
 
     .timer-type {
@@ -311,15 +814,15 @@
     }
 
     .timer-type.prepare {
-      color: var(--prepare)
+      color: rgba(255, 255, 255, .75)
     }
 
     .timer-type.work {
-      color: var(--work)
+      color: rgba(255, 255, 255, .75)
     }
 
     .timer-type.rest {
-      color: var(--rest)
+      color: rgba(255, 255, 255, .75)
     }
 
     .timer-label {
@@ -330,6 +833,7 @@
       text-align: center;
       margin-bottom: 12px;
       min-height: 54px;
+      color: #fff;
     }
 
     .timer-num {
@@ -342,36 +846,36 @@
     }
 
     .timer-num.prepare {
-      color: var(--prepare)
+      color: #fff
     }
 
     .timer-num.work {
-      color: var(--work)
+      color: #fff
     }
 
     .timer-num.rest {
-      color: var(--rest)
+      color: #fff
     }
 
     .timer-num.countdown {
-      color: var(--text)
+      font-size: clamp(200px, 52vw, 300px)
     }
 
     .timer-set {
       font-size: 13px;
-      color: var(--sub);
+      color: rgba(255, 255, 255, .6);
       margin-top: 16px;
       letter-spacing: .08em
     }
 
     .timer-next {
       font-size: 12px;
-      color: var(--muted);
+      color: rgba(255, 255, 255, .45);
       margin-top: 6px
     }
 
     .timer-next span {
-      color: var(--sub)
+      color: rgba(255, 255, 255, .65)
     }
 
     /* progress bar */
@@ -390,59 +894,145 @@
     }
 
     .timer-prog-fill.prepare {
-      background: var(--prepare)
+      background: rgba(255, 255, 255, .5)
     }
 
     .timer-prog-fill.work {
-      background: var(--work)
+      background: rgba(255, 255, 255, .5)
     }
 
     .timer-prog-fill.rest {
-      background: var(--rest)
+      background: rgba(255, 255, 255, .5)
     }
 
-    /* controls */
-    .timer-ctrls {
+    /* pause overlay when paused */
+    .timer-paused-overlay {
       position: fixed;
-      bottom: 16px;
-      left: 0;
-      right: 0;
-      display: flex;
+      inset: 0;
+      z-index: 5;
+      background: rgba(0, 0, 0, .6);
+      display: none;
+      align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 0 20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 4px;
+      color: var(--sub);
     }
 
-    .ctrl {
-      height: 50px;
-      padding: 0 22px;
-      border-radius: 25px;
-      border: 1px solid var(--border);
-      background: var(--surface);
+    .timer-paused-overlay.show {
+      display: flex
+    }
+
+    /* big center pause button */
+    .pause-center {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .08);
+      border: 2px solid rgba(255, 255, 255, .2);
       color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 28px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 7px;
+      justify-content: center;
       transition: all .15s;
     }
 
-    .ctrl:active {
-      transform: scale(.95)
+    .pause-center:active {
+      transform: translateX(-50%) scale(.92)
     }
 
-    .ctrl.primary {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text)
+    .pause-center.paused {
+      background: rgba(255, 255, 255, .15);
+      border-color: rgba(255, 255, 255, .4)
     }
 
-    .ctrl.danger {
-      border-color: #ff4444;
-      color: #ff4444
+    /* corner nav buttons */
+    .nav-back {
+      background: rgba(0, 0, 0, .3);
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .7);
+      position: fixed;
+      bottom: 24px;
+      left: 20px;
+      z-index: 10;
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--sub);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s;
+    }
+
+    .nav-skip {
+      background: rgba(0, 0, 0, .3);
+      border-color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .7);
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      z-index: 10;
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--sub);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s;
+    }
+
+    /* stop button — top right, hold to activate */
+    .stop-btn {
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top));
+      right: 16px;
+      z-index: 20;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, .2);
+      background: rgba(0, 0, 0, .3);
+      color: rgba(255, 255, 255, .6);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .stop-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(#ff4444 0deg, transparent 0deg);
+      transition: none;
+    }
+
+    .stop-icon {
+      position: relative;
+      z-index: 1;
+      font-size: 13px
     }
 
     /* ── DONE ── */
@@ -547,19 +1137,25 @@
   <!-- TIMER -->
   <div id="timerScreen">
     <div class="timer-bg" id="timerBg"></div>
+    <div class="timer-paused-overlay" id="pausedOverlay">PAUSED</div>
+
+    <button class="stop-btn" id="stopBtn">
+      <div class="stop-ring" id="stopRing"></div>
+      <div class="stop-icon">✕</div>
+    </button>
+
     <div class="timer-type" id="timerType"></div>
     <div class="timer-label" id="timerLabel"></div>
     <div class="timer-num" id="timerNum">0</div>
     <div class="timer-set" id="timerSet"></div>
     <div class="timer-next" id="timerNext"></div>
+
+    <button class="pause-center" id="pauseBtn" onclick="togglePause()">⏸</button>
+    <button class="nav-back" onclick="backTimer()">← Back</button>
+    <button class="nav-skip" onclick="skipBlock()">Skip ›</button>
+
     <div class="timer-prog-wrap">
       <div class="timer-prog-fill" id="timerProg" style="width:0%"></div>
-    </div>
-    <div class="timer-ctrls">
-      <button class="ctrl danger" onclick="stopTimer()">✕ Stop</button>
-      <button class="ctrl" onclick="backTimer()">← Back</button>
-      <button class="ctrl primary" id="pauseBtn" onclick="togglePause()">⏸ Pause</button>
-      <button class="ctrl" onclick="skipBlock()">Skip ›</button>
     </div>
   </div>
 
@@ -750,8 +1346,49 @@
 
     function togglePause() {
       paused = !paused;
-      document.getElementById('pauseBtn').textContent = paused ? '▶ Resume' : '⏸ Pause';
+      const btn = document.getElementById('pauseBtn');
+      const overlay = document.getElementById('pausedOverlay');
+      btn.textContent = paused ? '▶' : '⏸';
+      btn.classList.toggle('paused', paused);
+      overlay.classList.toggle('show', paused);
     }
+
+    // stop button — hold 3 seconds
+    let stopHoldTimer = null;
+    let stopHoldStart = null;
+    let stopRingAnim = null;
+
+    function startStopHold() {
+      stopHoldStart = Date.now();
+      stopRingAnim = setInterval(() => {
+        const elapsed = Date.now() - stopHoldStart;
+        const pct = Math.min(elapsed / 3000, 1);
+        const deg = pct * 360;
+        document.getElementById('stopRing').style.background =
+          `conic-gradient(#ff4444 ${deg}deg, transparent ${deg}deg)`;
+        if (pct >= 1) {
+          clearInterval(stopRingAnim);
+          stopTimer();
+        }
+      }, 30);
+    }
+
+    function cancelStopHold() {
+      if (stopRingAnim) clearInterval(stopRingAnim);
+      stopRingAnim = null; stopHoldStart = null;
+      document.getElementById('stopRing').style.background =
+        'conic-gradient(#ff4444 0deg, transparent 0deg)';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('stopBtn');
+      btn.addEventListener('mousedown', startStopHold);
+      btn.addEventListener('touchstart', e => { e.preventDefault(); startStopHold(); });
+      btn.addEventListener('mouseup', cancelStopHold);
+      btn.addEventListener('mouseleave', cancelStopHold);
+      btn.addEventListener('touchend', cancelStopHold);
+      btn.addEventListener('touchcancel', cancelStopHold);
+    });
 
     function skipBlock() {
       clearInterval(ticker);
@@ -865,7 +1502,9 @@
       document.getElementById('home').style.display = 'none';
       document.getElementById('timerScreen').classList.add('active');
       paused = false;
-      document.getElementById('pauseBtn').textContent = '⏸ Pause';
+      document.getElementById('pauseBtn').textContent = '⏸';
+      document.getElementById('pauseBtn').classList.remove('paused');
+      document.getElementById('pausedOverlay').classList.remove('show');
       updateUI();
       clearInterval(ticker);
       ticker = setInterval(tick, 1000);
