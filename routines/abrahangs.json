@@ -1,34 +1,105 @@
 {
   "name": "Abrahangs",
+  "description": "Emil Abrahamsson no-hang protocol. 40% effort, feet on floor. 6hr min between sessions.",
   "sets": 1,
   "blocks": [
     {
       "type": "prepare",
-      "label": "4-finger open hand",
+      "label": "4-finger half crimp",
       "duration": 5,
       "countdown_last": 3
     },
     {
       "type": "work",
-      "label": "4-finger open hand",
+      "label": "4-finger half crimp",
       "duration": 10,
       "countdown_last": 3
     },
-    { "type": "rest", "duration": 50 },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "4-finger half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "4-finger half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "4-finger half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "4-finger half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "4-finger half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
 
     {
       "type": "prepare",
-      "label": "Front-3 open, index middle ring",
+      "label": "3-finger drag",
       "duration": 5,
       "countdown_last": 3
     },
     {
       "type": "work",
-      "label": "Front-3 open",
+      "label": "3-finger drag",
       "duration": 10,
       "countdown_last": 3
     },
-    { "type": "rest", "duration": 50 },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "3-finger drag",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "3-finger drag",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "3-finger drag",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "3-finger drag",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "3-finger drag",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
 
     {
       "type": "prepare",
@@ -42,7 +113,14 @@
       "duration": 10,
       "countdown_last": 3
     },
-    { "type": "rest", "duration": 50 },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "Front-2 open",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
 
     {
       "type": "prepare",
@@ -56,7 +134,14 @@
       "duration": 10,
       "countdown_last": 3
     },
-    { "type": "rest", "duration": 50 },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "Middle-2 open",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
 
     {
       "type": "prepare",
@@ -70,7 +155,14 @@
       "duration": 10,
       "countdown_last": 3
     },
-    { "type": "rest", "duration": 50 },
+    { "type": "rest", "duration": 20 },
+    {
+      "type": "work",
+      "label": "Front-2 half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
 
     {
       "type": "prepare",
@@ -78,6 +170,13 @@
       "duration": 5,
       "countdown_last": 3
     },
+    {
+      "type": "work",
+      "label": "Middle-2 half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 20 },
     {
       "type": "work",
       "label": "Middle-2 half crimp",

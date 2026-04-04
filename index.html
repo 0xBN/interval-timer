@@ -528,6 +528,22 @@
     </div>
   </div>
 
+  <!-- DETAIL -->
+  <div id="detailScreen" style="display:none;min-height:100vh;flex-direction:column">
+    <div style="padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px">
+      <button onclick="closeDetail()"
+        style="background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;padding:0;line-height:1">←</button>
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px" id="detailName"></div>
+        <div style="font-size:11px;color:var(--sub)" id="detailMeta"></div>
+      </div>
+      <button id="detailPlay" onclick="startFromDetail()"
+        style="margin-left:auto;background:var(--text);color:var(--bg);border:none;border-radius:24px;padding:10px 22px;font-family:'DM Mono',monospace;font-size:13px;font-weight:500;cursor:pointer">▶
+        Start</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:12px 16px 40px" id="detailBlocks"></div>
+  </div>
+
   <!-- TIMER -->
   <div id="timerScreen">
     <div class="timer-bg" id="timerBg"></div>
@@ -605,7 +621,49 @@
       startBlock();
     }
 
-    let selectedVoice = null;
+    let detailRoutine = null;
+
+    function openDetail(r) {
+      detailRoutine = r;
+      document.getElementById('home').style.display = 'none';
+      const ds = document.getElementById('detailScreen');
+      ds.style.display = 'flex';
+      document.getElementById('detailName').textContent = r.name;
+      document.getElementById('detailMeta').textContent =
+        `${fmtDur(totalDur(r))} total · ${fmtDur(activeDur(r))} active`;
+
+      const blocks = expandBlocks(r);
+      const TYPE_COLOR = { prepare: 'var(--prepare)', work: 'var(--work)', rest: 'var(--rest)' };
+      const TYPE_LABEL = { prepare: 'PREPARE', work: 'WORK', rest: 'REST' };
+
+      let html = '';
+      let setNum = 0, prevSet = 0;
+      blocks.forEach((b, i) => {
+        if (b.totalSets > 1 && b.setNum !== prevSet) {
+          prevSet = b.setNum;
+          html += `<div style="font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin:14px 0 6px">Set ${b.setNum} / ${b.totalSets}</div>`;
+        }
+        html += `<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:5px">
+      <div style="width:3px;height:36px;border-radius:2px;background:${TYPE_COLOR[b.type]};flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:11px;color:${TYPE_COLOR[b.type]};letter-spacing:.1em">${TYPE_LABEL[b.type]}</div>
+        <div style="font-size:14px;font-weight:500;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.label || '—'}</div>
+      </div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--muted);flex-shrink:0">${b.duration}s</div>
+    </div>`;
+      });
+      document.getElementById('detailBlocks').innerHTML = html;
+    }
+
+    function closeDetail() {
+      document.getElementById('detailScreen').style.display = 'none';
+      document.getElementById('home').style.display = 'flex';
+    }
+
+    function startFromDetail() {
+      document.getElementById('detailScreen').style.display = 'none';
+      startRoutine(detailRoutine);
+    }
 
     function loadVoices() {
       const voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
@@ -703,11 +761,27 @@
     }
 
     function backTimer() {
-      // pause and go home but don't reset
-      paused = true;
-      document.getElementById('pauseBtn').textContent = '▶ Resume';
-      document.getElementById('timerScreen').classList.remove('active');
-      document.getElementById('home').style.display = 'flex';
+      clearInterval(ticker);
+      speechSynthesis.cancel();
+      // if more than 2s elapsed on this block — restart it (like pressing back mid-song)
+      const blockElapsed = flat[blockIdx].duration - timeLeft;
+      if (blockElapsed > 2) {
+        elapsed -= blockElapsed;
+        if (elapsed < 0) elapsed = 0;
+        startBlock();
+      } else {
+        // at the very start of this block — go to previous block
+        if (blockIdx > 0) {
+          blockIdx--;
+          elapsed -= flat[blockIdx].duration;
+          if (elapsed < 0) elapsed = 0;
+          startBlock();
+        } else {
+          // already at first block — restart from top
+          blockIdx = 0; elapsed = 0;
+          startBlock();
+        }
+      }
     }
 
     function stopTimer() {
@@ -773,7 +847,7 @@
 
     function routineCard(r, i) {
       const active = activeDur(r);
-      return `<div class="routine-card" onclick="startRoutine(ROUTINES[${i}])">
+      return `<div class="routine-card" onclick="openDetail(ROUTINES[${i}])">
     <div class="routine-info">
       <div class="routine-name">${r.name}</div>
       <div class="routine-meta">${expandBlocks(r).length} blocks · ${fmtDur(active)} active</div>
@@ -783,7 +857,7 @@
       <div class="routine-dur">${fmtDur(totalDur(r))}</div>
       <div style="font-size:10px;color:var(--muted);letter-spacing:.06em">total</div>
     </div>
-    <div class="play-btn">▶</div>
+    <div class="play-btn" onclick="event.stopPropagation();startRoutine(ROUTINES[${i}])">▶</div>
   </div>`;
     }
 
