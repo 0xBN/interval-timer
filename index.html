@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>timer/</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    :root {
+      --bg: #0c0c0c;
+      --surface: #161616;
+      --border: #222;
+      --muted: #444;
+      --sub: #777;
+      --text: #f0f0f0;
+      --prepare: #d4621a;
+      --work: #1a9e3a;
+      --rest: #1a5abf;
+      --r: 10px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden
+    }
+
+    /* ── HOME ── */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column
+    }
+
+    .home-header {
+      padding: 20px 16px 12px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .home-wordmark {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      letter-spacing: 2px;
+      color: var(--text);
+      line-height: 1
+    }
+
+    .home-sub {
+      font-size: 11px;
+      color: var(--sub);
+      margin-top: 2px;
+      letter-spacing: .08em
+    }
+
+    .home-body {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      padding-bottom: 40px
+    }
+
+    .section-lbl {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      margin: 20px 0 10px
+    }
+
+    .section-lbl:first-child {
+      margin-top: 0
+    }
+
+    /* routine card */
+    .routine-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color .15s;
+      user-select: none;
+    }
+
+    .routine-card:active {
+      border-color: var(--sub)
+    }
+
+    .routine-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .routine-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text)
+    }
+
+    .routine-meta {
+      font-size: 11px;
+      color: var(--sub);
+      margin-top: 3px
+    }
+
+    .routine-dur {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: var(--muted);
+      flex-shrink: 0;
+      line-height: 1
+    }
+
+    .play-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--text);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* block pips */
+    .pip-row {
+      display: flex;
+      gap: 3px;
+      margin-top: 6px;
+      flex-wrap: wrap
+    }
+
+    .pip {
+      height: 5px;
+      border-radius: 3px;
+      flex: 1;
+      max-width: 32px;
+      min-width: 5px
+    }
+
+    .pip.prepare {
+      background: var(--prepare);
+      opacity: .7
+    }
+
+    .pip.work {
+      background: var(--work)
+    }
+
+    .pip.rest {
+      background: var(--rest);
+      opacity: .6
+    }
+
+    /* json paste */
+    .paste-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 8px
+    }
+
+    .paste-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      cursor: pointer
+    }
+
+    .paste-hdr-lbl {
+      font-size: 12px;
+      color: var(--sub)
+    }
+
+    .paste-toggle {
+      color: var(--sub);
+      font-size: 20px;
+      line-height: 1
+    }
+
+    .paste-body {
+      display: none;
+      padding: 12px;
+      border-top: 1px solid var(--border)
+    }
+
+    .paste-body.open {
+      display: block
+    }
+
+    textarea.paste-input {
+      width: 100%;
+      min-height: 140px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    textarea.paste-input:focus {
+      outline: none;
+      border-color: var(--sub)
+    }
+
+    .paste-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px
+    }
+
+    .paste-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .paste-btn.run {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text)
+    }
+
+    .paste-btn:active {
+      opacity: .8
+    }
+
+    .paste-err {
+      font-size: 11px;
+      color: #ff4444;
+      margin-top: 6px;
+      display: none
+    }
+
+    .paste-err.show {
+      display: block
+    }
+
+    /* ── TIMER SCREEN ── */
+    #timerScreen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 100px;
+    }
+
+    #timerScreen.active {
+      display: flex
+    }
+
+    .timer-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      transition: background .5s ease;
+    }
+
+    .timer-bg.prepare {
+      background: rgba(212, 98, 26, .18)
+    }
+
+    .timer-bg.work {
+      background: rgba(26, 158, 58, .18)
+    }
+
+    .timer-bg.rest {
+      background: rgba(26, 90, 191, .18)
+    }
+
+    .timer-type {
+      font-size: 12px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      transition: color .3s;
+    }
+
+    .timer-type.prepare {
+      color: var(--prepare)
+    }
+
+    .timer-type.work {
+      color: var(--work)
+    }
+
+    .timer-type.rest {
+      color: var(--rest)
+    }
+
+    .timer-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 9vw, 54px);
+      letter-spacing: 1px;
+      line-height: 1;
+      text-align: center;
+      margin-bottom: 12px;
+      min-height: 54px;
+    }
+
+    .timer-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(140px, 38vw, 220px);
+      line-height: .85;
+      letter-spacing: -6px;
+      text-align: center;
+      transition: color .3s;
+    }
+
+    .timer-num.prepare {
+      color: var(--prepare)
+    }
+
+    .timer-num.work {
+      color: var(--work)
+    }
+
+    .timer-num.rest {
+      color: var(--rest)
+    }
+
+    .timer-num.countdown {
+      color: var(--text)
+    }
+
+    .timer-set {
+      font-size: 13px;
+      color: var(--sub);
+      margin-top: 16px;
+      letter-spacing: .08em
+    }
+
+    .timer-next {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px
+    }
+
+    .timer-next span {
+      color: var(--sub)
+    }
+
+    /* progress bar */
+    .timer-prog-wrap {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--muted)
+    }
+
+    .timer-prog-fill {
+      height: 100%;
+      transition: width .1s linear, background .3s
+    }
+
+    .timer-prog-fill.prepare {
+      background: var(--prepare)
+    }
+
+    .timer-prog-fill.work {
+      background: var(--work)
+    }
+
+    .timer-prog-fill.rest {
+      background: var(--rest)
+    }
+
+    /* controls */
+    .timer-ctrls {
+      position: fixed;
+      bottom: 16px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 20px;
+    }
+
+    .ctrl {
+      height: 50px;
+      padding: 0 22px;
+      border-radius: 25px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all .15s;
+    }
+
+    .ctrl:active {
+      transform: scale(.95)
+    }
+
+    .ctrl.primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text)
+    }
+
+    .ctrl.danger {
+      border-color: #ff4444;
+      color: #ff4444
+    }
+
+    /* ── DONE ── */
+    #doneScreen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+      background: var(--bg);
+    }
+
+    #doneScreen.active {
+      display: flex
+    }
+
+    .done-word {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 96px;
+      letter-spacing: 4px;
+      color: var(--work);
+      line-height: 1
+    }
+
+    .done-sub {
+      font-size: 13px;
+      color: var(--sub)
+    }
+
+    .done-back {
+      margin-top: 12px;
+      padding: 14px 32px;
+      border-radius: var(--r);
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HOME -->
+  <div id="home">
+    <div class="home-header">
+      <div class="home-wordmark">TIMER/</div>
+      <div class="home-sub">json-driven interval timer</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+        <div style="font-size:10px;color:var(--sub);letter-spacing:.08em">VOICE</div>
+        <select id="voiceSel"
+          style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 8px;color:var(--text);font-family:'DM Mono',monospace;font-size:11px;-webkit-appearance:none">
+          <option>loading…</option>
+        </select>
+      </div>
+    </div>
+    <div class="home-body">
+      <div class="section-lbl">Routines</div>
+      <div id="routineList"></div>
+      <div class="section-lbl">Custom JSON</div>
+      <div class="paste-wrap">
+        <div class="paste-hdr" onclick="togglePaste()">
+          <div class="paste-hdr-lbl">Paste a routine JSON</div>
+          <div class="paste-toggle" id="pasteToggle">+</div>
+        </div>
+        <div class="paste-body" id="pasteBody">
+          <textarea class="paste-input" id="pasteInput"
+            placeholder='{"name":"My Routine","sets":1,"blocks":[{"type":"prepare","label":"Get ready","duration":5},{"type":"work","label":"Exercise","duration":30,"countdown_last":3},{"type":"rest","duration":20}]}'></textarea>
+          <div class="paste-actions">
+            <button class="paste-btn" onclick="pasteExample()">Example</button>
+            <button class="paste-btn run" onclick="runPasted()">▶ Run</button>
+          </div>
+          <div class="paste-err" id="pasteErr"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div id="timerScreen">
+    <div class="timer-bg" id="timerBg"></div>
+    <div class="timer-type" id="timerType"></div>
+    <div class="timer-label" id="timerLabel"></div>
+    <div class="timer-num" id="timerNum">0</div>
+    <div class="timer-set" id="timerSet"></div>
+    <div class="timer-next" id="timerNext"></div>
+    <div class="timer-prog-wrap">
+      <div class="timer-prog-fill" id="timerProg" style="width:0%"></div>
+    </div>
+    <div class="timer-ctrls">
+      <button class="ctrl danger" onclick="stopTimer()">✕ Stop</button>
+      <button class="ctrl" onclick="backTimer()">← Back</button>
+      <button class="ctrl primary" id="pauseBtn" onclick="togglePause()">⏸ Pause</button>
+      <button class="ctrl" onclick="skipBlock()">Skip ›</button>
+    </div>
+  </div>
+
+  <!-- DONE -->
+  <div id="doneScreen">
+    <div class="done-word">DONE</div>
+    <div class="done-sub" id="doneSub"></div>
+    <button class="done-back" onclick="backToHome()">← Back</button>
+  </div>
+
+  <script>
+    // ── ROUTINES ─────────────────────────────────────────────────────────────────
+    // Each routine is a JS object. To add more: just push to ROUTINES array below.
+    // Or load from JSON files — see loadRoutinesFromFolder() at bottom.
+
+    const ROUTINES = [];
+
+    // ── ENGINE ───────────────────────────────────────────────────────────────────
+
+    let routine = null, flat = [], blockIdx = 0, timeLeft = 0;
+    let totalTime = 0, elapsed = 0, paused = false, ticker = null;
+    let audioCtx = null;
+
+    function expandBlocks(r) {
+      const sets = r.sets || 1;
+      const out = [];
+      for (let s = 0; s < sets; s++) {
+        r.blocks.forEach((b, bi) => {
+          const isLast = s === sets - 1 && bi === r.blocks.length - 1;
+          if (isLast && b.skip_on_last) return;
+          out.push({ ...b, setNum: s + 1, totalSets: sets });
+        });
+      }
+      return out;
+    }
+
+    function totalDur(r) { return expandBlocks(r).reduce((s, b) => s + b.duration, 0); }
+    function activeDur(r) { return expandBlocks(r).filter(b => b.type === 'work').reduce((s, b) => s + b.duration, 0); }
+
+    function fmtDur(secs) {
+      const m = Math.floor(secs / 60), s = secs % 60;
+      return m > 0 ? `${m}:${String(s).padStart(2, '0')}` : `${s}s`;
+    }
+
+    function buildPips(r) {
+      return expandBlocks(r).map(b =>
+        `<div class="pip ${b.type}" title="${b.label || b.type} ${b.duration}s"></div>`
+      ).join('');
+    }
+
+    function startRoutine(r) {
+      routine = r; flat = expandBlocks(r);
+      blockIdx = 0; elapsed = 0;
+      totalTime = flat.reduce((s, b) => s + b.duration, 0);
+      paused = false;
+      document.getElementById('home').style.display = 'none';
+      document.getElementById('doneScreen').classList.remove('active');
+      document.getElementById('timerScreen').classList.add('active');
+      startBlock();
+    }
+
+    let selectedVoice = null;
+
+    function loadVoices() {
+      const voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+      const sel = document.getElementById('voiceSel');
+      if (!sel || !voices.length) return;
+      sel.innerHTML = voices.map((v, i) =>
+        `<option value="${i}">${v.name.replace('com.apple.ttsbundle.', '').replace('com.apple.speech.synthesis.voice.', '')}</option>`
+      ).join('');
+      // prefer a natural-sounding voice
+      const preferred = voices.findIndex(v =>
+        /samantha|karen|daniel|moira|siri|natural|neural|enhanced/i.test(v.name)
+      );
+      sel.value = preferred >= 0 ? preferred : 0;
+      selectedVoice = voices[preferred >= 0 ? preferred : 0];
+      sel.onchange = () => { selectedVoice = voices[parseInt(sel.value)]; };
+    }
+
+    function speak(text) {
+      if (!text || !window.speechSynthesis) return;
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      if (selectedVoice) u.voice = selectedVoice;
+      u.rate = 0.95; u.pitch = 1.0; u.volume = 1.0;
+      speechSynthesis.speak(u);
+    }
+
+    function startBlock() {
+      if (blockIdx >= flat.length) { finish(); return; }
+      const b = flat[blockIdx];
+      timeLeft = b.duration;
+
+      // announce based on type
+      if (b.type === 'prepare') {
+        speak(`Prepare for ${b.label || 'next exercise'}`);
+      } else if (b.type === 'work') {
+        speak('Start');
+      } else if (b.type === 'rest') {
+        speak('Rest');
+      }
+
+      updateUI();
+      clearInterval(ticker);
+      ticker = setInterval(tick, 1000);
+    }
+
+    function tick() {
+      if (paused) return;
+      timeLeft--; elapsed++;
+      const b = flat[blockIdx];
+      const cd = b.countdown_last || 0;
+      if (cd > 0 && timeLeft > 0 && timeLeft <= cd) beep(300, .06);
+      if (timeLeft <= 0) {
+        beep(520, .12);
+        blockIdx++;
+        startBlock();
+        return;
+      }
+      updateUI();
+    }
+
+    function updateUI() {
+      if (blockIdx >= flat.length) return;
+      const b = flat[blockIdx];
+      const type = b.type;
+      const cd = b.countdown_last || 0;
+      const isCd = cd > 0 && timeLeft <= cd;
+
+      document.getElementById('timerBg').className = `timer-bg ${type}`;
+      document.getElementById('timerType').className = `timer-type ${type}`;
+      document.getElementById('timerType').textContent = type.toUpperCase();
+      document.getElementById('timerLabel').textContent = b.label || '';
+      document.getElementById('timerNum').className = `timer-num ${isCd ? 'countdown' : type}`;
+      document.getElementById('timerNum').textContent = timeLeft;
+      document.getElementById('timerProg').className = `timer-prog-fill ${type}`;
+      document.getElementById('timerProg').style.width = totalTime > 0 ? (elapsed / totalTime * 100) + '%' : '0%';
+
+      const si = b.totalSets > 1 ? `Set ${b.setNum} / ${b.totalSets}` : '';
+      document.getElementById('timerSet').textContent = si;
+
+      const next = flat[blockIdx + 1];
+      document.getElementById('timerNext').innerHTML = next
+        ? `Next: <span>${next.label || next.type} · ${next.duration}s</span>` : '';
+    }
+
+    function togglePause() {
+      paused = !paused;
+      document.getElementById('pauseBtn').textContent = paused ? '▶ Resume' : '⏸ Pause';
+    }
+
+    function skipBlock() {
+      clearInterval(ticker);
+      elapsed += timeLeft; timeLeft = 0;
+      blockIdx++;
+      startBlock();
+    }
+
+    function backTimer() {
+      // pause and go home but don't reset
+      paused = true;
+      document.getElementById('pauseBtn').textContent = '▶ Resume';
+      document.getElementById('timerScreen').classList.remove('active');
+      document.getElementById('home').style.display = 'flex';
+    }
+
+    function stopTimer() {
+      clearInterval(ticker);
+      speechSynthesis.cancel();
+      document.getElementById('timerScreen').classList.remove('active');
+      document.getElementById('home').style.display = 'flex';
+      // reset state
+      routine = null; flat = []; blockIdx = 0;
+    }
+
+    function finish() {
+      clearInterval(ticker);
+      speechSynthesis.cancel();
+      document.getElementById('timerScreen').classList.remove('active');
+      document.getElementById('doneScreen').classList.add('active');
+      document.getElementById('doneSub').textContent = `${routine.name} · ${fmtDur(totalTime)}`;
+      beep(660, .18);
+      setTimeout(() => beep(880, .18), 220);
+      setTimeout(() => beep(1100, .18), 440);
+      setTimeout(() => speak('Session complete. Well done.'), 600);
+    }
+
+    function backToHome() {
+      document.getElementById('doneScreen').classList.remove('active');
+      document.getElementById('home').style.display = 'flex';
+    }
+
+    function beep(freq, vol) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        o.frequency.value = freq;
+        g.gain.setValueAtTime(vol, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + .18);
+        o.start(); o.stop(audioCtx.currentTime + .18);
+      } catch (e) { }
+    }
+
+    // ── HOME ──────────────────────────────────────────────────────────────────────
+
+    function renderHome() {
+      const list = document.getElementById('routineList');
+      // if there's a paused routine in progress, show resume card first
+      if (routine && paused) {
+        const resumeCard = `<div class="routine-card" style="border-color:var(--work)" onclick="resumeTimer()">
+      <div class="routine-info">
+        <div class="routine-name" style="color:var(--work)">▶ Resume: ${routine.name}</div>
+        <div class="routine-meta">paused · ${fmtDur(timeLeft)} left on current block</div>
+      </div>
+    </div>`;
+        list.innerHTML = resumeCard + (ROUTINES.length ? ROUTINES.map((r, i) => routineCard(r, i)).join('') : '');
+        return;
+      }
+      if (!ROUTINES.length) {
+        list.innerHTML = '<div style="font-size:12px;color:var(--sub);padding:8px 0">No routines loaded. Paste JSON below.</div>';
+        return;
+      }
+      list.innerHTML = ROUTINES.map((r, i) => routineCard(r, i)).join('');
+    }
+
+    function routineCard(r, i) {
+      const active = activeDur(r);
+      return `<div class="routine-card" onclick="startRoutine(ROUTINES[${i}])">
+    <div class="routine-info">
+      <div class="routine-name">${r.name}</div>
+      <div class="routine-meta">${expandBlocks(r).length} blocks · ${fmtDur(active)} active</div>
+      <div class="pip-row">${buildPips(r)}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;gap:2px">
+      <div class="routine-dur">${fmtDur(totalDur(r))}</div>
+      <div style="font-size:10px;color:var(--muted);letter-spacing:.06em">total</div>
+    </div>
+    <div class="play-btn">▶</div>
+  </div>`;
+    }
+
+    function resumeTimer() {
+      document.getElementById('home').style.display = 'none';
+      document.getElementById('timerScreen').classList.add('active');
+      paused = false;
+      document.getElementById('pauseBtn').textContent = '⏸ Pause';
+      updateUI();
+      clearInterval(ticker);
+      ticker = setInterval(tick, 1000);
+    }
+
+    function togglePaste() {
+      const body = document.getElementById('pasteBody');
+      const tog = document.getElementById('pasteToggle');
+      const open = body.classList.toggle('open');
+      tog.textContent = open ? '−' : '+';
+    }
+
+    function pasteExample() {
+      document.getElementById('pasteInput').value = JSON.stringify({
+        name: "Example — 4F Crimp",
+        sets: 6,
+        blocks: [
+          { type: "prepare", label: "4F Crimp — get set", duration: 5 },
+          { type: "work", label: "4F Crimp", duration: 13, countdown_last: 3 },
+          { type: "rest", label: "Rest", duration: 20, skip_on_last: true }
+        ]
+      }, null, 2);
+      document.getElementById('pasteErr').classList.remove('show');
+    }
+
+    function runPasted() {
+      const raw = document.getElementById('pasteInput').value.trim();
+      const err = document.getElementById('pasteErr');
+      try {
+        const r = JSON.parse(raw);
+        if (!r.blocks || !Array.isArray(r.blocks)) throw new Error('Missing "blocks" array');
+        err.classList.remove('show');
+        startRoutine(r);
+      } catch (e) {
+        err.textContent = e.message;
+        err.classList.add('show');
+      }
+    }
+
+    // ── LOAD ROUTINES FROM JSON FILES ─────────────────────────────────────────────
+    // To add routines: drop JSON files in a /routines/ folder next to this HTML.
+    // Each file should be a valid routine object (same schema as above).
+    // List them in routines/index.json as an array of filenames.
+    // Example routines/index.json: ["abrahangs.json", "core.json"]
+
+    async function loadRoutines() {
+      try {
+        const idx = await fetch('./routines/index.json');
+        if (!idx.ok) throw new Error('no index');
+        const files = await idx.json();
+        for (const f of files) {
+          try {
+            const res = await fetch(`./routines/${f}`);
+            if (res.ok) {
+              const r = await res.json();
+              ROUTINES.push(r);
+            }
+          } catch (e) { }
+        }
+      } catch (e) {
+        // no routines folder — that's fine, user can paste
+      }
+      renderHome();
+    }
+
+    loadRoutines();
+    // load voices — may fire async on some browsers
+    if (window.speechSynthesis) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+  </script>
+</body>
+
+</html>

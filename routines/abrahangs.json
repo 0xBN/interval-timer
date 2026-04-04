@@ -1,0 +1,89 @@
+{
+  "name": "Abrahangs",
+  "sets": 1,
+  "blocks": [
+    {
+      "type": "prepare",
+      "label": "4-finger open hand",
+      "duration": 5,
+      "countdown_last": 3
+    },
+    {
+      "type": "work",
+      "label": "4-finger open hand",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 50 },
+
+    {
+      "type": "prepare",
+      "label": "Front-3 open, index middle ring",
+      "duration": 5,
+      "countdown_last": 3
+    },
+    {
+      "type": "work",
+      "label": "Front-3 open",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 50 },
+
+    {
+      "type": "prepare",
+      "label": "Front-2 open, index and middle",
+      "duration": 5,
+      "countdown_last": 3
+    },
+    {
+      "type": "work",
+      "label": "Front-2 open",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 50 },
+
+    {
+      "type": "prepare",
+      "label": "Middle-2 open, middle and ring",
+      "duration": 5,
+      "countdown_last": 3
+    },
+    {
+      "type": "work",
+      "label": "Middle-2 open",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 50 },
+
+    {
+      "type": "prepare",
+      "label": "Front-2 half crimp, index and middle",
+      "duration": 5,
+      "countdown_last": 3
+    },
+    {
+      "type": "work",
+      "label": "Front-2 half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 50 },
+
+    {
+      "type": "prepare",
+      "label": "Middle-2 half crimp, middle and ring",
+      "duration": 5,
+      "countdown_last": 3
+    },
+    {
+      "type": "work",
+      "label": "Middle-2 half crimp",
+      "duration": 10,
+      "countdown_last": 3
+    },
+    { "type": "rest", "duration": 10, "skip_on_last": true }
+  ]
+}
