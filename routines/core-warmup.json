@@ -1,0 +1,49 @@
+{
+  "name": "Core & PT Warmup",
+  "description": "~10 min daily maintenance. Bird dog, dead bug, clamshell, glute bridge, eccentric step-down, side plank.",
+  "sets": 1,
+  "blocks": [
+    {"type":"prepare","label":"Bird dog","duration":5,"countdown_last":3},
+    {"type":"work","label":"Bird dog — right","duration":20,"countdown_last":20},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Bird dog — left","duration":20,"countdown_last":20},
+    {"type":"rest","duration":15},
+
+    {"type":"prepare","label":"Dead bug","duration":5,"countdown_last":3},
+    {"type":"work","label":"Dead bug — right arm left leg","duration":20,"countdown_last":20},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Dead bug — left arm right leg","duration":20,"countdown_last":20},
+    {"type":"rest","duration":15},
+
+    {"type":"prepare","label":"Clamshell","duration":5,"countdown_last":3},
+    {"type":"work","label":"Clamshell — right","duration":25,"countdown_last":25},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Clamshell — left","duration":25,"countdown_last":25},
+    {"type":"rest","duration":15},
+
+    {"type":"prepare","label":"Glute bridge","duration":5,"countdown_last":3},
+    {"type":"work","label":"Glute bridge","duration":30,"countdown_last":30},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Glute bridge","duration":30,"countdown_last":30},
+    {"type":"rest","duration":15},
+
+    {"type":"prepare","label":"Eccentric step-down","duration":5,"countdown_last":3},
+    {"type":"work","label":"Step-down — right","duration":30,"countdown_last":30},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Step-down — left","duration":30,"countdown_last":30},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Step-down — right","duration":30,"countdown_last":30},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Step-down — left","duration":30,"countdown_last":30},
+    {"type":"rest","duration":15},
+
+    {"type":"prepare","label":"Side plank","duration":5,"countdown_last":3},
+    {"type":"work","label":"Side plank — right","duration":30,"countdown_last":30},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Side plank — left","duration":30,"countdown_last":30},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Side plank — right","duration":30,"countdown_last":30},
+    {"type":"rest","duration":10},
+    {"type":"work","label":"Side plank — left","duration":30,"countdown_last":30}
+  ]
+}
