@@ -1293,11 +1293,11 @@
 
       // announce based on type
       if (b.type === 'prepare') {
-        speak(`Prepare for ${b.label || 'next exercise'}`);
+        speak(`${b.label}`);
       } else if (b.type === 'work') {
         speak('Start');
       } else if (b.type === 'rest') {
-        speak('Rest');
+        speak(b.label || 'Rest');
       }
 
       updateUI();
@@ -1545,28 +1545,43 @@
     }
 
     // ── LOAD ROUTINES FROM JSON FILES ─────────────────────────────────────────────
-    // To add routines: drop JSON files in a /routines/ folder next to this HTML.
-    // Each file should be a valid routine object (same schema as above).
-    // List them in routines/index.json as an array of filenames.
-    // Example routines/index.json: ["abrahangs.json", "core.json"]
+    // Drop any .json file into /routines/ — it appears automatically.
+    // No index.json needed. Uses GitHub API to list folder contents.
+    // Falls back to index.json if not on GitHub Pages (e.g. localhost).
+
+    const GITHUB_REPO = '0xBN/interval-timer';
+    const GITHUB_BRANCH = 'main';
 
     async function loadRoutines() {
+      let files = [];
+
       try {
-        const idx = await fetch('./routines/index.json');
-        if (!idx.ok) throw new Error('no index');
-        const files = await idx.json();
-        for (const f of files) {
-          try {
-            const res = await fetch(`./routines/${f}`);
-            if (res.ok) {
-              const r = await res.json();
-              ROUTINES.push(r);
-            }
-          } catch (e) { }
+        // Try GitHub API first
+        const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/routines?ref=${GITHUB_BRANCH}`;
+        const res = await fetch(apiUrl);
+        if (res.ok) {
+          const contents = await res.json();
+          files = contents
+            .filter(f => f.name.endsWith('.json'))
+            .map(f => f.name);
+        } else {
+          throw new Error('api failed');
         }
       } catch (e) {
-        // no routines folder — that's fine, user can paste
+        // Fallback to index.json (localhost dev)
+        try {
+          const idx = await fetch('./routines/index.json');
+          if (idx.ok) files = await idx.json();
+        } catch (e2) { }
       }
+
+      for (const f of files) {
+        try {
+          const res = await fetch(`./routines/${f}`);
+          if (res.ok) ROUTINES.push(await res.json());
+        } catch (e) { }
+      }
+
       renderHome();
     }
 
