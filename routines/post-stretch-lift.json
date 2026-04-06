@@ -1,0 +1,33 @@
+{
+  "name": "Post-Session Stretch — Lifting",
+  "description": "After Tuesday and Saturday lifting sessions. ~7 min.",
+  "sets": 1,
+  "blocks": [
+    {"type":"prepare","label":"Standing hamstring stretch. Foot on bench, hinge forward from hips, keep back flat","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Hamstring stretch — right","duration":40,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left leg","duration":6},
+    {"type":"work",   "label":"Hamstring stretch — left","duration":40,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Couch stretch. Right knee on floor against wall, hip forward for hip flexor","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Couch stretch — right hip","duration":45,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left side","duration":6},
+    {"type":"work",   "label":"Couch stretch — left hip","duration":45,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Standing QL stretch. Left arm overhead, lean to the right. Feel left side lengthen","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"QL stretch — left side","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Repeat left side","duration":6},
+    {"type":"work",   "label":"QL stretch — left side","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Chest opener. Arms back, open your chest, chin up","duration":5,"countdown_last":3},
+    {"type":"work",   "label":"Chest opener — hold","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Release","duration":8},
+
+    {"type":"prepare","label":"Wrist extensor stretch. Arm out, palm down, pull fingers back","duration":6,"countdown_last":3},
+    {"type":"work",   "label":"Wrist stretch — right","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left wrist","duration":6},
+    {"type":"work",   "label":"Wrist stretch — left","duration":30,"countdown_last":10}
+  ]
+}

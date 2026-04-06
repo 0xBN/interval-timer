@@ -1,0 +1,59 @@
+{
+  "name": "Core & PT Warmup",
+  "description": "Daily pre-session warmup. ~10 min.",
+  "sets": 1,
+  "blocks": [
+    {"type":"prepare","label":"Bird dog. Hands and knees. Extend right arm and left leg","duration":6,"countdown_last":3},
+    {"type":"work",   "label":"Bird dog — right arm, left leg","duration":20,"countdown_last":20},
+    {"type":"rest",   "label":"Switch. Left arm, right leg","duration":6},
+    {"type":"work",   "label":"Bird dog — left arm, right leg","duration":20,"countdown_last":20},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"Dead bug. On your back, arms up. Lower right arm and left leg","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Dead bug — right arm, left leg","duration":20,"countdown_last":20},
+    {"type":"rest",   "label":"Switch. Left arm, right leg","duration":6},
+    {"type":"work",   "label":"Dead bug — left arm, right leg","duration":20,"countdown_last":20},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"Clamshell. On your right side, knees bent. Open top knee","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Clamshell — right side","duration":25,"countdown_last":25},
+    {"type":"rest",   "label":"Switch to left side","duration":6},
+    {"type":"work",   "label":"Clamshell — left side","duration":25,"countdown_last":25},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"Glute bridge. On your back, feet flat. Push hips up and hold","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Glute bridge — hold","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Lower down. Rest","duration":8},
+    {"type":"work",   "label":"Glute bridge — hold","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"Eccentric step-down. Stand on right foot. Slowly lower left foot, 3 to 4 seconds","duration":8,"countdown_last":3},
+    {"type":"work",   "label":"Step-down — right foot","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Switch to left foot","duration":6},
+    {"type":"work",   "label":"Step-down — left foot","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Switch to right foot","duration":6},
+    {"type":"work",   "label":"Step-down — right foot","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Switch to left foot","duration":6},
+    {"type":"work",   "label":"Step-down — left foot","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"Side plank. On your right forearm. Hold body straight","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Side plank — right side","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Switch to left side","duration":6},
+    {"type":"work",   "label":"Side plank — left side","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Switch to right side","duration":6},
+    {"type":"work",   "label":"Side plank — right side","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Switch to left side","duration":6},
+    {"type":"work",   "label":"Side plank — left side","duration":30,"countdown_last":30},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"Copenhagen plank. Side plank with top foot on a chair. Hold straight","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Copenhagen — right side","duration":20,"countdown_last":20},
+    {"type":"rest",   "label":"Switch to left side","duration":6},
+    {"type":"work",   "label":"Copenhagen — left side","duration":20,"countdown_last":20},
+    {"type":"rest",   "label":"Switch to right side","duration":6},
+    {"type":"work",   "label":"Copenhagen — right side","duration":20,"countdown_last":20},
+    {"type":"rest",   "label":"Switch to left side","duration":6},
+    {"type":"work",   "label":"Copenhagen — left side","duration":20,"countdown_last":20}
+  ]
+}

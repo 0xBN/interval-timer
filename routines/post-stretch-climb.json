@@ -1,0 +1,33 @@
+{
+  "name": "Post-Session Stretch — Climbing",
+  "description": "After bouldering or climbing sessions. ~6 min.",
+  "sets": 1,
+  "blocks": [
+    {"type":"prepare","label":"Chest opener. Arms back, open your chest, chin up","duration":5,"countdown_last":3},
+    {"type":"work",   "label":"Chest opener — hold","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Release. Shake it out","duration":8},
+
+    {"type":"prepare","label":"Shoulder cross stretch. Right arm across chest, left hand pulls it in","duration":5,"countdown_last":3},
+    {"type":"work",   "label":"Shoulder stretch — right","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left arm","duration":6},
+    {"type":"work",   "label":"Shoulder stretch — left","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Wrist extensor stretch. Arm out, palm down, pull fingers back with other hand","duration":6,"countdown_last":3},
+    {"type":"work",   "label":"Wrist stretch — right","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left wrist","duration":6},
+    {"type":"work",   "label":"Wrist stretch — left","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Couch stretch. Right knee on floor against wall, hip forward for hip flexor","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Couch stretch — right hip","duration":45,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left side","duration":6},
+    {"type":"work",   "label":"Couch stretch — left hip","duration":45,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Standing QL stretch. Left arm overhead, lean to the right. Feel left side lengthen","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"QL stretch — left side","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Repeat left side","duration":6},
+    {"type":"work",   "label":"QL stretch — left side","duration":30,"countdown_last":10}
+  ]
+}

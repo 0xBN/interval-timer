@@ -1,1 +1,8 @@
-["abrahangs.json", "core-warmup.json"]
+[
+  "abrahangs.json",
+  "core-warmup.json",
+  "pre-warmup.json",
+  "post-stretch-climb.json",
+  "post-stretch-lift.json",
+  "thursday-mobility.json"
+]

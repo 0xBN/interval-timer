@@ -1,0 +1,67 @@
+{
+  "name": "Thursday Mobility",
+  "description": "QL release, scoliosis correction, thoracic mobility, full stretch. ~15 min.",
+  "sets": 1,
+  "blocks": [
+    {"type":"prepare","label":"QL foam roll. Place roller lateral to left spine, between last rib and hip. Let gravity sink in","duration":8,"countdown_last":3},
+    {"type":"work",   "label":"QL foam roll — left side","duration":120,"countdown_last":10},
+    {"type":"rest",   "label":"Roll out. Rest","duration":10},
+    {"type":"work",   "label":"QL foam roll — left side","duration":60,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"McGill side bridge. RIGHT side only. On right forearm and feet stacked. Hold straight line","duration":8,"countdown_last":3},
+    {"type":"work",   "label":"McGill side bridge — right","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest. Right side again","duration":8},
+    {"type":"work",   "label":"McGill side bridge — right","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest. Final set","duration":8},
+    {"type":"work",   "label":"McGill side bridge — right","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"Cat-cow. Hands and knees. Arch up then drop belly down slowly","duration":6,"countdown_last":3},
+    {"type":"work",   "label":"Cat-cow — 10 reps slow","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Thread the needle. Hands and knees. Slide right arm under body and rotate","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Thread the needle — right","duration":20,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left","duration":6},
+    {"type":"work",   "label":"Thread the needle — left","duration":20,"countdown_last":10},
+    {"type":"rest",   "label":"Repeat right","duration":6},
+    {"type":"work",   "label":"Thread the needle — right","duration":20,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left","duration":6},
+    {"type":"work",   "label":"Thread the needle — left","duration":20,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":10},
+
+    {"type":"prepare","label":"90/90 hip stretch. Sit with front and back legs at 90 degrees. Sit tall","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"90/90 — right hip forward","duration":45,"countdown_last":10},
+    {"type":"rest",   "label":"Switch sides","duration":8},
+    {"type":"work",   "label":"90/90 — left hip forward","duration":45,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Couch stretch. Right knee against wall, hip forward. Deep hip flexor stretch","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"Couch stretch — right","duration":45,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left","duration":6},
+    {"type":"work",   "label":"Couch stretch — left","duration":45,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Standing QL stretch. Left arm overhead, lean right. Feel the left side open up","duration":7,"countdown_last":3},
+    {"type":"work",   "label":"QL stretch — left side","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Hold again","duration":6},
+    {"type":"work",   "label":"QL stretch — left side","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Doorway chest stretch. Forearms on door frame, lean forward gently","duration":5,"countdown_last":3},
+    {"type":"work",   "label":"Chest stretch — hold","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":6},
+    {"type":"work",   "label":"Chest stretch — hold","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Rest","duration":8},
+
+    {"type":"prepare","label":"Wrist extensor stretch. Arm out, palm down, pull fingers back gently","duration":6,"countdown_last":3},
+    {"type":"work",   "label":"Wrist stretch — right","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left","duration":6},
+    {"type":"work",   "label":"Wrist stretch — left","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to right","duration":6},
+    {"type":"work",   "label":"Wrist stretch — right","duration":30,"countdown_last":10},
+    {"type":"rest",   "label":"Switch to left","duration":6},
+    {"type":"work",   "label":"Wrist stretch — left","duration":30,"countdown_last":10}
+  ]
+}
