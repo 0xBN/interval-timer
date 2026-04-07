@@ -1586,6 +1586,26 @@
     }
 
     loadRoutines();
+
+    // ── URL PARAM LAUNCH ──────────────────────────────────────────────────────────
+    // If ?r= param exists, decode and launch immediately, skipping home screen.
+    // Used when linking from the workout app.
+    (function checkUrlParam() {
+      try {
+        const raw = new URLSearchParams(window.location.search).get('r');
+        if (!raw) return;
+        const routine = JSON.parse(decodeURIComponent(raw));
+        if (!routine?.blocks) return;
+        // Wait for voices to load then launch
+        const launch = () => startRoutine(routine);
+        if (window.speechSynthesis?.getVoices().length) {
+          launch();
+        } else {
+          // Give voices a moment to load, then launch regardless
+          setTimeout(launch, 800);
+        }
+      } catch (e) { }
+    })();
     // load voices — may fire async on some browsers
     if (window.speechSynthesis) {
       speechSynthesis.onvoiceschanged = loadVoices;
