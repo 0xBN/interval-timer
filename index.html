@@ -1178,6 +1178,10 @@
     let routine = null, flat = [], blockIdx = 0, timeLeft = 0;
     let totalTime = 0, elapsed = 0, paused = false, ticker = null;
     let audioCtx = null;
+    let selectedVoice = null;
+    let voicesLoaded = false;
+    let pendingSpeechText = null;
+    let pendingSpeechTimer = null;
 
     function expandBlocks(r) {
       const sets = r.sets || 1;
@@ -1261,6 +1265,17 @@
       startRoutine(detailRoutine);
     }
 
+    function flushPendingSpeech() {
+      if (!pendingSpeechText) return;
+      const text = pendingSpeechText;
+      pendingSpeechText = null;
+      if (pendingSpeechTimer) {
+        clearTimeout(pendingSpeechTimer);
+        pendingSpeechTimer = null;
+      }
+      speak(text);
+    }
+
     function loadVoices() {
       const voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
       const sel = document.getElementById('voiceSel');
@@ -1274,11 +1289,24 @@
       );
       sel.value = preferred >= 0 ? preferred : 0;
       selectedVoice = voices[preferred >= 0 ? preferred : 0];
+      voicesLoaded = true;
       sel.onchange = () => { selectedVoice = voices[parseInt(sel.value)]; };
+      flushPendingSpeech();
     }
 
     function speak(text) {
       if (!text || !window.speechSynthesis) return;
+      if (!voicesLoaded) {
+        pendingSpeechText = text;
+        loadVoices();
+        if (!pendingSpeechTimer) {
+          pendingSpeechTimer = setTimeout(() => {
+            voicesLoaded = true;
+            flushPendingSpeech();
+          }, 750);
+        }
+        return;
+      }
       speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       if (selectedVoice) u.voice = selectedVoice;
