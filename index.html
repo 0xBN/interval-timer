@@ -1177,6 +1177,7 @@
 
     let routine = null, flat = [], blockIdx = 0, timeLeft = 0;
     let totalTime = 0, elapsed = 0, paused = false, ticker = null;
+    let awaitingStart = false;
     let audioCtx = null;
     let selectedVoice = null;
     let voicesLoaded = false;
@@ -1210,15 +1211,43 @@
       ).join('');
     }
 
-    function startRoutine(r) {
+    function setCenterButton(label, isPausedStyle = false) {
+      const btn = document.getElementById('pauseBtn');
+      btn.textContent = label;
+      btn.classList.toggle('paused', isPausedStyle);
+    }
+
+    function showPausedOverlay(text) {
+      const overlay = document.getElementById('pausedOverlay');
+      overlay.textContent = text;
+      overlay.classList.add('show');
+    }
+
+    function hidePausedOverlay() {
+      document.getElementById('pausedOverlay').classList.remove('show');
+    }
+
+    function startRoutine(r, autoStart = true) {
       routine = r; flat = expandBlocks(r);
       blockIdx = 0; elapsed = 0;
       totalTime = flat.reduce((s, b) => s + b.duration, 0);
       paused = false;
+      awaitingStart = !autoStart;
       document.getElementById('home').style.display = 'none';
       document.getElementById('doneScreen').classList.remove('active');
       document.getElementById('timerScreen').classList.add('active');
-      startBlock();
+      if (autoStart) {
+        hidePausedOverlay();
+        setCenterButton('⏸', false);
+        startBlock();
+      } else {
+        clearInterval(ticker);
+        timeLeft = flat[0]?.duration || 0;
+        updateUI();
+        paused = true;
+        showPausedOverlay('TAP START');
+        setCenterButton('▶', true);
+      }
     }
 
     let detailRoutine = null;
@@ -1373,12 +1402,18 @@
     }
 
     function togglePause() {
+      if (awaitingStart) {
+        awaitingStart = false;
+        paused = false;
+        hidePausedOverlay();
+        setCenterButton('⏸', false);
+        startBlock();
+        return;
+      }
       paused = !paused;
-      const btn = document.getElementById('pauseBtn');
-      const overlay = document.getElementById('pausedOverlay');
-      btn.textContent = paused ? '▶' : '⏸';
-      btn.classList.toggle('paused', paused);
-      overlay.classList.toggle('show', paused);
+      setCenterButton(paused ? '▶' : '⏸', paused);
+      if (paused) showPausedOverlay('PAUSED');
+      else hidePausedOverlay();
     }
 
     // stop button — hold 3 seconds
@@ -1455,7 +1490,7 @@
       document.getElementById('timerScreen').classList.remove('active');
       document.getElementById('home').style.display = 'flex';
       // reset state
-      routine = null; flat = []; blockIdx = 0;
+      routine = null; flat = []; blockIdx = 0; awaitingStart = false;
     }
 
     function finish() {
@@ -1530,9 +1565,9 @@
       document.getElementById('home').style.display = 'none';
       document.getElementById('timerScreen').classList.add('active');
       paused = false;
-      document.getElementById('pauseBtn').textContent = '⏸';
-      document.getElementById('pauseBtn').classList.remove('paused');
-      document.getElementById('pausedOverlay').classList.remove('show');
+      awaitingStart = false;
+      setCenterButton('⏸', false);
+      hidePausedOverlay();
       updateUI();
       clearInterval(ticker);
       ticker = setInterval(tick, 1000);
@@ -1621,7 +1656,7 @@
         if (!raw) return;
         const routine = JSON.parse(raw);
         if (!routine?.blocks) return;
-        startRoutine(routine);
+        startRoutine(routine, false);
       } catch (e) {
         console.error('URL param parse failed:', e);
       }
