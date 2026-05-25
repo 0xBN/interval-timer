@@ -70,20 +70,21 @@ Pattern sections are comma-separated token lists:
 Examples:
 
 - `p5@3,w10@3,r20,w10@3`
-- `p5@3,w10@3,r20,w10@3,r20,w10@3,r20!`
+- `p5@3,w10@3,r6^Switch to left side,w10@3,r8^Rest`
 
 
 5. TOKEN GRAMMAR
 
 Each token matches:
 
-`<type><duration>[ @<countdown> ][ ! ]`
+`<type><duration>[ @<countdown> ][ ^<rest_label> ][ ! ]`
 
 Practical forms:
 - `p5`
 - `p5@3`
 - `w30@10`
 - `r20`
+- `r6^Switch to left side`
 - `r10!`
 
 Definitions:
@@ -96,6 +97,10 @@ Definitions:
 - `@<countdown>`
   - optional
   - sets `countdown_last`
+- `^<rest_label>`
+  - optional
+  - valid for rest tokens
+  - gives the rest block spoken text
 - `!`
   - optional
   - sets `skip_on_last: true`
@@ -114,6 +119,8 @@ Examples:
   - work, duration 30, countdown_last 10
 - `r20`
   - rest, duration 20
+- `r6^Switch to left side`
+  - rest, duration 6, spoken label `Switch to left side`
 - `r10!`
   - rest, duration 10, skip_on_last true
 
@@ -131,9 +138,11 @@ Expansion rules:
   - `label: work label`
 - `r...` creates a block:
   - `type: "rest"`
-  - no label by default unless your consumer adds one separately
+  - no label by default unless the token provides `^<rest_label>`
 - `@N` becomes:
   - `countdown_last: N`
+- `^<rest_label>` becomes:
+  - `label: <rest_label>`
 - `!` becomes:
   - `skip_on_last: true`
 
@@ -142,7 +151,7 @@ Expansion rules:
 
 Compact input:
 
-`Grip A^Grip A, get set~p5@3,w10@3,r20,w10@3,r10!`
+`Grip A^Grip A, get set~p5@3,w10@3,r20^Shake it out,w10@3,r10^Rest!`
 
 Expanded blocks:
 
@@ -150,9 +159,9 @@ Expanded blocks:
 [
   { "type": "prepare", "label": "Grip A, get set", "duration": 5, "countdown_last": 3 },
   { "type": "work", "label": "Grip A", "duration": 10, "countdown_last": 3 },
-  { "type": "rest", "duration": 20 },
+  { "type": "rest", "label": "Shake it out", "duration": 20 },
   { "type": "work", "label": "Grip A", "duration": 10, "countdown_last": 3 },
-  { "type": "rest", "duration": 10, "skip_on_last": true }
+  { "type": "rest", "label": "Rest", "duration": 10, "skip_on_last": true }
 ]
 ```
 
@@ -190,6 +199,7 @@ If generating a compact routine string:
 - keep all spoken labels fully explicit
 - use `@N` on any token that needs a countdown
 - write repeated blocks explicitly
+- use `r<duration>^<spoken text>` when a rest block needs spoken transition guidance
 - use `!` only when the block should become `skip_on_last: true`
 - do not output JSON unless explicitly requested
 
@@ -203,6 +213,7 @@ If implementing a parser in another repo:
 - split pattern section on `,`
 - parse tokens according to the grammar above
 - map `@N` to `countdown_last`
+- map rest-token `^label` to `label`
 - map `!` to `skip_on_last`
 - build the equivalent internal routine object
 
@@ -219,5 +230,6 @@ Important:
 - Countdowns are explicit per token with `@N`
 - Write repeated blocks explicitly
 - `Label^Prepare Label` means work label differs from prepare label
+- `r6^Switch to left side` means a spoken transition rest cue
 - `!` means `skip_on_last: true`
 - Do not invent alternate syntax

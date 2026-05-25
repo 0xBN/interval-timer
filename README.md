@@ -53,6 +53,7 @@ Pattern tokens:
 - `w10` = work 10 seconds
 - `w10@10` = work 10 seconds with `countdown_last: 10`
 - `r20` = rest 20 seconds
+- `r6^Switch to left side` = rest 6 seconds with spoken cue `Switch to left side`
 - `r10!` = rest 10 seconds with `skip_on_last`
 
 Repeated blocks should be written explicitly.
