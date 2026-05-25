@@ -70,21 +70,20 @@ Pattern sections are comma-separated token lists:
 Examples:
 
 - `p5@3,w10@3,r20,w10@3`
-- `p5@3,w10@3x6,r20!`
+- `p5@3,w10@3,r20,w10@3,r20,w10@3,r20!`
 
 
 5. TOKEN GRAMMAR
 
 Each token matches:
 
-`<type><duration>[ @<countdown> ][ x<repeat> ][ ! ]`
+`<type><duration>[ @<countdown> ][ ! ]`
 
 Practical forms:
 - `p5`
 - `p5@3`
 - `w30@10`
 - `r20`
-- `w10@3x6`
 - `r10!`
 
 Definitions:
@@ -97,9 +96,6 @@ Definitions:
 - `@<countdown>`
   - optional
   - sets `countdown_last`
-- `x<repeat>`
-  - optional
-  - repeats the token N times
 - `!`
   - optional
   - sets `skip_on_last: true`
@@ -118,10 +114,6 @@ Examples:
   - work, duration 30, countdown_last 10
 - `r20`
   - rest, duration 20
-- `w10@3x6`
-  - six work blocks
-  - each duration 10
-  - each countdown_last 3
 - `r10!`
   - rest, duration 10, skip_on_last true
 
@@ -144,7 +136,6 @@ Expansion rules:
   - `countdown_last: N`
 - `!` becomes:
   - `skip_on_last: true`
-- `xN` repeats the token N times as N expanded blocks
 
 
 8. EXAMPLE EXPANSION
@@ -185,10 +176,11 @@ These characters have syntax meaning and should not appear raw in labels unless 
 - `^`
 - `,`
 - `@`
-- `x`
 - `!`
 
 If generating labels for this format, avoid those characters in labels.
+
+The letter `x` is not reserved in labels.
 
 
 11. GENERATION RULES FOR LLMS
@@ -197,7 +189,7 @@ If generating a compact routine string:
 - output only the compact routine string unless asked otherwise
 - keep all spoken labels fully explicit
 - use `@N` on any token that needs a countdown
-- use `xN` only when it is semantically correct to repeat that exact token
+- write repeated blocks explicitly
 - use `!` only when the block should become `skip_on_last: true`
 - do not output JSON unless explicitly requested
 
@@ -210,7 +202,6 @@ If implementing a parser in another repo:
 - split label section on the first `^`
 - split pattern section on `,`
 - parse tokens according to the grammar above
-- expand `xN` into repeated blocks
 - map `@N` to `countdown_last`
 - map `!` to `skip_on_last`
 - build the equivalent internal routine object
@@ -226,7 +217,7 @@ Important:
 - The active format is `?x=...`
 - Do not use deprecated `cd`
 - Countdowns are explicit per token with `@N`
-- `xN` repeat shorthand is allowed
+- Write repeated blocks explicitly
 - `Label^Prepare Label` means work label differs from prepare label
 - `!` means `skip_on_last: true`
 - Do not invent alternate syntax

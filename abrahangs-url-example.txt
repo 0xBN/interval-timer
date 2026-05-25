@@ -42,7 +42,6 @@ COMPACT FORMAT LEGEND
 - `p5` = prepare 5 seconds
 - `w10` = work 10 seconds
 - `r20` = rest 20 seconds
-- `r20x5,w10` = repeat "rest 20 + work 10" five more times after the first work
 - `@3` on a token = apply `countdown_last: 3` to that block
 
 
@@ -52,4 +51,4 @@ WHY THE AFTER VERSION IS SHORTER
 - It removes repeated JSON keys
 - It removes repeated object punctuation
 - It can preserve per-block countdown behavior from the old JSON by using `@N`
-- It compresses repeated work/rest sequences into short pattern notation
+- It still stays far shorter than the original JSON URL while keeping labels and explicit countdowns

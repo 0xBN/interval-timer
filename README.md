@@ -55,13 +55,10 @@ Pattern tokens:
 - `r20` = rest 20 seconds
 - `r10!` = rest 10 seconds with `skip_on_last`
 
-Repeat shorthand:
-- `p5x2` = two prepare blocks of 5 seconds
-- `w10x6` = six work blocks of 10 seconds
-- `r20x5` = five rest blocks of 20 seconds
+Repeated blocks should be written explicitly.
 
 Example:
-- `p5@3,w10@3,r20,w10@3,r20x2`
+- `p5@3,w10@3,r20,w10@3,r20,w10@3`
 
 ## Speech Behavior
 

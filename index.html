@@ -1113,7 +1113,7 @@
         </div>
         <div class="paste-body" id="pasteBody">
           <textarea class="paste-input" id="pasteInput"
-            placeholder='My Routine~Grip A~p5,w10,r20x5,w10~Grip B^Grip B, prep cue~p5,w10,r20,w10'></textarea>
+            placeholder='My Routine~Grip A~p5@3,w10@3,r20,w10@3,r20,w10@3~Grip B^Grip B, prep cue~p5@3,w10@3,r20,w10@3'></textarea>
           <div class="paste-actions">
             <button class="paste-btn" onclick="pasteExample()">Example</button>
             <button class="paste-btn run" onclick="runPasted()">▶ Run</button>
@@ -1697,19 +1697,6 @@
     function expandCompactToken(token, labels) {
       const trimmed = token.trim();
       if (!trimmed) return [];
-
-      const repeatMatch = trimmed.match(/^([prw])(\d+)(?:@(\d+))?x(\d+)$/i);
-      if (repeatMatch) {
-        const [, typeCode, durationStr, tokenCountdownStr, repeatStr] = repeatMatch;
-        const out = [];
-        for (let i = 0; i < parseInt(repeatStr, 10); i++) {
-          const repeatedToken = tokenCountdownStr == null
-            ? `${typeCode}${durationStr}`
-            : `${typeCode}${durationStr}@${tokenCountdownStr}`;
-          out.push(...expandCompactToken(repeatedToken, labels));
-        }
-        return out;
-      }
 
       const skipOnLast = trimmed.endsWith('!');
       const core = skipOnLast ? trimmed.slice(0, -1) : trimmed;
