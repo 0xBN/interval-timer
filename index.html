@@ -1184,11 +1184,36 @@
     let routine = null, flat = [], blockIdx = 0, timeLeft = 0;
     let totalTime = 0, elapsed = 0, paused = false, ticker = null;
     let awaitingStart = false;
-    let audioCtx = null;
-    let selectedVoice = null;
-    let voicesLoaded = false;
-    let pendingSpeechText = null;
-    let pendingSpeechTimer = null;
+	    let audioCtx = null;
+	    let selectedVoice = null;
+	    let voicesLoaded = false;
+	    let pendingSpeechText = null;
+	    let pendingSpeechTimer = null;
+	    let wakeLock = null;
+
+	    async function requestWakeLock() {
+	      if (!('wakeLock' in navigator) || !routine) return;
+	      try {
+	        if (wakeLock) return;
+	        wakeLock = await navigator.wakeLock.request('screen');
+	        wakeLock.addEventListener('release', () => {
+	          wakeLock = null;
+	        }, { once: true });
+	      } catch (err) {
+	        // Unsupported browsers or temporary platform restrictions can reject this silently.
+	      }
+	    }
+
+	    async function releaseWakeLock() {
+	      if (!wakeLock) return;
+	      try {
+	        await wakeLock.release();
+	      } catch (err) {
+	        // Ignore release failures; local state is cleared either way.
+	      } finally {
+	        wakeLock = null;
+	      }
+	    }
 
     function expandBlocks(r) {
       const sets = r.sets || 1;
@@ -1242,8 +1267,9 @@
       document.getElementById('home').style.display = 'none';
       document.getElementById('doneScreen').classList.remove('active');
       document.getElementById('timerScreen').classList.add('active');
-      if (autoStart) {
-        hidePausedOverlay();
+	      if (autoStart) {
+	        requestWakeLock();
+	        hidePausedOverlay();
         setCenterButton('⏸', false);
         startBlock();
       } else {
@@ -1411,12 +1437,14 @@
       if (awaitingStart) {
         awaitingStart = false;
         paused = false;
+        requestWakeLock();
         hidePausedOverlay();
         setCenterButton('⏸', false);
         startBlock();
         return;
       }
       paused = !paused;
+      if (!paused) requestWakeLock();
       setCenterButton(paused ? '▶' : '⏸', paused);
       if (paused) showPausedOverlay('PAUSED');
       else hidePausedOverlay();
@@ -1449,15 +1477,22 @@
         'conic-gradient(#ff4444 0deg, transparent 0deg)';
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById('stopBtn');
-      btn.addEventListener('mousedown', startStopHold);
-      btn.addEventListener('touchstart', e => { e.preventDefault(); startStopHold(); });
+	    document.addEventListener('DOMContentLoaded', () => {
+	      const btn = document.getElementById('stopBtn');
+	      btn.addEventListener('mousedown', startStopHold);
+	      btn.addEventListener('touchstart', e => { e.preventDefault(); startStopHold(); });
       btn.addEventListener('mouseup', cancelStopHold);
       btn.addEventListener('mouseleave', cancelStopHold);
       btn.addEventListener('touchend', cancelStopHold);
-      btn.addEventListener('touchcancel', cancelStopHold);
-    });
+	      btn.addEventListener('touchcancel', cancelStopHold);
+	    });
+
+	    document.addEventListener('visibilitychange', () => {
+	      const timerActive = document.getElementById('timerScreen')?.classList.contains('active');
+	      if (document.visibilityState === 'visible' && timerActive && routine && !paused && !awaitingStart) {
+	        requestWakeLock();
+	      }
+	    });
 
     function skipBlock() {
       clearInterval(ticker);
@@ -1493,6 +1528,7 @@
     function stopTimer() {
       clearInterval(ticker);
       speechSynthesis.cancel();
+      releaseWakeLock();
       document.getElementById('timerScreen').classList.remove('active');
       document.getElementById('home').style.display = 'flex';
       // reset state
@@ -1502,6 +1538,7 @@
     function finish() {
       clearInterval(ticker);
       speechSynthesis.cancel();
+      releaseWakeLock();
       document.getElementById('timerScreen').classList.remove('active');
       document.getElementById('doneScreen').classList.add('active');
       document.getElementById('doneSub').textContent = `${routine.name} · ${fmtDur(totalTime)}`;
@@ -1512,6 +1549,7 @@
     }
 
     function backToHome() {
+      releaseWakeLock();
       document.getElementById('doneScreen').classList.remove('active');
       document.getElementById('home').style.display = 'flex';
     }
