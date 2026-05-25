@@ -1087,7 +1087,7 @@
   <div id="home">
     <div class="home-header">
       <div class="home-wordmark">TIMER/</div>
-      <div class="home-sub">json-driven interval timer</div>
+      <div class="home-sub">url-driven interval timer</div>
       <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
         <div style="font-size:10px;color:var(--sub);letter-spacing:.08em">VOICE</div>
         <select id="voiceSel"
@@ -1099,15 +1099,15 @@
     <div class="home-body">
       <div class="section-lbl">Routines</div>
       <div id="routineList"></div>
-      <div class="section-lbl">Custom JSON</div>
+      <div class="section-lbl">Custom URL Routine</div>
       <div class="paste-wrap">
         <div class="paste-hdr" onclick="togglePaste()">
-          <div class="paste-hdr-lbl">Paste a routine JSON</div>
+          <div class="paste-hdr-lbl">Paste compact routine text</div>
           <div class="paste-toggle" id="pasteToggle">+</div>
         </div>
         <div class="paste-body" id="pasteBody">
           <textarea class="paste-input" id="pasteInput"
-            placeholder='{"name":"My Routine","sets":1,"blocks":[{"type":"prepare","label":"Get ready","duration":5},{"type":"work","label":"Exercise","duration":30,"countdown_last":3},{"type":"rest","duration":20}]}'></textarea>
+            placeholder='My Routine~Grip A~p5,w10,r20x5,w10~Grip B^Grip B, prep cue~p5,w10,r20,w10'></textarea>
           <div class="paste-actions">
             <button class="paste-btn" onclick="pasteExample()">Example</button>
             <button class="paste-btn run" onclick="runPasted()">▶ Run</button>
@@ -1666,6 +1666,159 @@
       speechSynthesis.onvoiceschanged = loadVoices;
       loadVoices();
     }
+  </script>
+  <script>
+    function normalizeCompactLabel(label) {
+      return (label || '')
+        .replace(/â€”/g, '—')
+        .replace(/Â·/g, '·')
+        .replace(/â€¦/g, '...')
+        .trim();
+    }
+
+    function normalizeCompactRoutine(r) {
+      return {
+        ...r,
+        name: normalizeCompactLabel(r.name),
+        description: normalizeCompactLabel(r.description),
+        blocks: (r.blocks || []).map(b => ({
+          ...b,
+          label: b.label ? normalizeCompactLabel(b.label) : b.label
+        }))
+      };
+    }
+
+    function parseCompactCountdown(value, fallback = 3) {
+      const n = parseInt(value, 10);
+      return Number.isFinite(n) && n >= 0 ? n : fallback;
+    }
+
+    function expandCompactToken(token, labels, countdown) {
+      const trimmed = token.trim();
+      if (!trimmed) return [];
+
+      const repeatMatch = trimmed.match(/^([prw])(\d+)x(\d+)$/i);
+      if (repeatMatch) {
+        const [, typeCode, durationStr, repeatStr] = repeatMatch;
+        const out = [];
+        for (let i = 0; i < parseInt(repeatStr, 10); i++) {
+          out.push(...expandCompactToken(`${typeCode}${durationStr}`, labels, countdown));
+        }
+        return out;
+      }
+
+      const skipOnLast = trimmed.endsWith('!');
+      const core = skipOnLast ? trimmed.slice(0, -1) : trimmed;
+      const match = core.match(/^([prw])(\d+)$/i);
+      if (!match) throw new Error(`Invalid token: ${trimmed}`);
+
+      const [, typeCode, durationStr] = match;
+      const typeMap = { p: 'prepare', r: 'rest', w: 'work' };
+      const type = typeMap[typeCode.toLowerCase()];
+      const duration = parseInt(durationStr, 10);
+      const block = { type, duration };
+
+      if (type === 'prepare') block.label = labels.prepare;
+      if (type === 'work') {
+        block.label = labels.work;
+        if (countdown > 0) block.countdown_last = countdown;
+      }
+      if (skipOnLast) block.skip_on_last = true;
+
+      return [block];
+    }
+
+    function parseCompactRoutineV2(raw, countdown = 3) {
+      const decoded = decodeURIComponent(raw || '');
+      const parts = decoded.split('~').map(s => s.trim()).filter(Boolean);
+      if (parts.length < 3) throw new Error('Compact routine must include a name and at least one label/pattern pair.');
+      if ((parts.length - 1) % 2 !== 0) throw new Error('Each label section must be followed by a pattern section.');
+
+      const blocks = [];
+      for (let i = 1; i < parts.length; i += 2) {
+        const labelSpec = parts[i];
+        const pattern = parts[i + 1];
+        const [workLabelRaw, prepareLabelRaw] = labelSpec.split('^');
+        const labels = {
+          work: normalizeCompactLabel(workLabelRaw),
+          prepare: normalizeCompactLabel(prepareLabelRaw || workLabelRaw)
+        };
+
+        pattern.split(',').forEach(token => {
+          blocks.push(...expandCompactToken(token, labels, countdown));
+        });
+      }
+
+      return {
+        name: normalizeCompactLabel(parts[0]),
+        sets: 1,
+        blocks
+      };
+    }
+
+    async function loadRoutinesFromCatalog() {
+      try {
+        const res = await fetch('./routines-catalog.json');
+        if (!res.ok) throw new Error('catalog load failed');
+        const catalog = await res.json();
+        ROUTINES.length = 0;
+        Object.values(catalog.routines || {}).forEach(value => {
+          ROUTINES.push(normalizeCompactRoutine(value));
+        });
+        renderHome();
+      } catch (e) {
+        console.error('Routine catalog load failed:', e);
+      }
+    }
+
+    function pasteExample() {
+      document.getElementById('pasteInput').value =
+        'Example — 4F Crimp~4F Crimp^4F Crimp, get set~p5,w13,r20,w13,r20,w13,r20,w13,r20,w13,r20,w13,r20!';
+      document.getElementById('pasteErr').classList.remove('show');
+    }
+
+    function runPasted() {
+      const raw = document.getElementById('pasteInput').value.trim();
+      const err = document.getElementById('pasteErr');
+      try {
+        const r = parseCompactRoutineV2(raw, 3);
+        err.classList.remove('show');
+        startRoutine(r);
+      } catch (e) {
+        err.textContent = e.message;
+        err.classList.add('show');
+      }
+    }
+
+    function launchFromUrlParams() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const compact = params.get('x');
+        const countdown = parseCompactCountdown(params.get('cd'), 3);
+        const raw = params.get('r');
+
+        if (compact) {
+          startRoutine(parseCompactRoutineV2(compact, countdown), false);
+          return true;
+        }
+
+        if (raw) {
+          const parsed = normalizeCompactRoutine(JSON.parse(raw));
+          if (parsed?.blocks) {
+            startRoutine(parsed, false);
+            return true;
+          }
+        }
+      } catch (e) {
+        console.error('URL param parse failed:', e);
+      }
+      return false;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadRoutinesFromCatalog();
+      launchFromUrlParams();
+    });
   </script>
 </body>
 

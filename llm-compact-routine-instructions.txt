@@ -1,0 +1,104 @@
+LLM INSTRUCTIONS FOR COMPACT TIMER URL FORMAT
+
+Goal:
+- Output a compact routine string for the `x` URL parameter
+- Preserve full spoken labels for text-to-speech
+- Do not output JSON unless explicitly asked
+
+
+OUTPUT FORMAT
+
+Return only the compact routine string unless asked for explanation.
+
+Structure:
+
+Routine Name~Label Section 1~Pattern 1~Label Section 2~Pattern 2~...
+
+
+LABEL SECTION RULES
+
+- `Work Label`
+  Use this when the prepare cue and work label are the same.
+
+- `Work Label^Prepare Label`
+  Use this when the prepare spoken cue should be different from the work label.
+
+Examples:
+
+- `4-finger half crimp`
+- `Front-2 open^Front-2 open, index and middle`
+
+
+PATTERN RULES
+
+- `p5` = prepare for 5 seconds
+- `w10` = work for 10 seconds
+- `r20` = rest for 20 seconds
+- `r10!` = final rest for 10 seconds, marked `skip_on_last`
+
+Patterns are comma-separated.
+
+Example:
+
+`p5,w10,r20,w10,r20,w10`
+
+
+IMPORTANT LIMITATION
+
+Do not use compressed repeat notation like `r20x5`.
+
+The current parser expects each repeated block explicitly written out.
+
+Use this:
+
+`p5,w10,r20,w10,r20,w10,r20,w10`
+
+Not this:
+
+`p5,w10,r20x3,w10`
+
+
+COUNTDOWN
+
+Countdown is passed separately in the URL with `cd`.
+
+Example:
+
+`&cd=3`
+
+Unless told otherwise, assume:
+
+- `cd=3` for hang-style timers
+- longer countdowns only when explicitly requested
+
+
+FULL URL SHAPE
+
+`https://something.com/?x=<compact-routine>&cd=3`
+
+
+EXAMPLE: ABRAHANGS
+
+Compact string:
+
+Abrahangs~4-finger half crimp~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20~3-finger drag~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20~Front-2 open^Front-2 open, index and middle~p5,w10,r20,w10,r20~Middle-2 open^Middle-2 open, middle and ring~p5,w10,r20,w10,r20~Front-2 half crimp^Front-2 half crimp, index and middle~p5,w10,r20,w10,r20~Middle-2 half crimp^Middle-2 half crimp, middle and ring~p5,w10,r20,w10,r10!
+
+Example URL:
+
+https://something.com/?x=Abrahangs~4-finger%20half%20crimp~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20~3-finger%20drag~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20~Front-2%20open^Front-2%20open,%20index%20and%20middle~p5,w10,r20,w10,r20~Middle-2%20open^Middle-2%20open,%20middle%20and%20ring~p5,w10,r20,w10,r20~Front-2%20half%20crimp^Front-2%20half%20crimp,%20index%20and%20middle~p5,w10,r20,w10,r20~Middle-2%20half%20crimp^Middle-2%20half%20crimp,%20middle%20and%20ring~p5,w10,r20,w10,r10!&cd=3
+
+
+PROMPT TEMPLATE
+
+Generate a compact timer routine string for this URL-based interval timer.
+
+Requirements:
+- Output only the compact routine string
+- Use the format: `Routine Name~Label~pattern~Label^Prepare Label~pattern`
+- Use `p` for prepare, `w` for work, `r` for rest
+- Write every repeated block explicitly
+- Keep the full spoken labels
+- Do not output JSON
+
+Workout request:
+- [insert workout description here]

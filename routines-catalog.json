@@ -1,0 +1,403 @@
+{
+  "version": 1,
+  "generated_from": "routines/*.json",
+  "routines": {
+    "abrahangs": {
+      "name": "Abrahangs",
+      "description": "Emil Abrahamsson no-hang protocol. 40% effort, feet on floor. 6hr min between sessions.",
+      "sets": 1,
+      "blocks": [
+        {
+          "type": "prepare",
+          "label": "4-finger half crimp",
+          "duration": 5,
+          "countdown_last": 3
+        },
+        {
+          "type": "work",
+          "label": "4-finger half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "4-finger half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "4-finger half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "4-finger half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "4-finger half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "4-finger half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "prepare",
+          "label": "3-finger drag",
+          "duration": 5,
+          "countdown_last": 3
+        },
+        {
+          "type": "work",
+          "label": "3-finger drag",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "3-finger drag",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "3-finger drag",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "3-finger drag",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "3-finger drag",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "3-finger drag",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "prepare",
+          "label": "Front-2 open, index and middle",
+          "duration": 5,
+          "countdown_last": 3
+        },
+        {
+          "type": "work",
+          "label": "Front-2 open",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "Front-2 open",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "prepare",
+          "label": "Middle-2 open, middle and ring",
+          "duration": 5,
+          "countdown_last": 3
+        },
+        {
+          "type": "work",
+          "label": "Middle-2 open",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "Middle-2 open",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "prepare",
+          "label": "Front-2 half crimp, index and middle",
+          "duration": 5,
+          "countdown_last": 3
+        },
+        {
+          "type": "work",
+          "label": "Front-2 half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "Front-2 half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "prepare",
+          "label": "Middle-2 half crimp, middle and ring",
+          "duration": 5,
+          "countdown_last": 3
+        },
+        {
+          "type": "work",
+          "label": "Middle-2 half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 20 },
+        {
+          "type": "work",
+          "label": "Middle-2 half crimp",
+          "duration": 10,
+          "countdown_last": 3
+        },
+        { "type": "rest", "duration": 10, "skip_on_last": true }
+      ]
+    },
+    "core-warmup": {
+      "name": "Core & PT Warmup",
+      "description": "~10 min daily maintenance. Bird dog, dead bug, clamshell, glute bridge, eccentric step-down, side plank.",
+      "sets": 1,
+      "blocks": [
+        { "type": "prepare", "label": "Bird dog", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Bird dog â€” right", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Bird dog â€” left", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "duration": 15 },
+        { "type": "prepare", "label": "Dead bug", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Dead bug â€” right arm left leg", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Dead bug â€” left arm right leg", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "duration": 15 },
+        { "type": "prepare", "label": "Clamshell", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Clamshell â€” right", "duration": 25, "countdown_last": 25 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Clamshell â€” left", "duration": 25, "countdown_last": 25 },
+        { "type": "rest", "duration": 15 },
+        { "type": "prepare", "label": "Glute bridge", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Glute bridge", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Glute bridge", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 15 },
+        { "type": "prepare", "label": "Eccentric step-down", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Step-down â€” right", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Step-down â€” left", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Step-down â€” right", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Step-down â€” left", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 15 },
+        { "type": "prepare", "label": "Side plank", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Side plank â€” right", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Side plank â€” left", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Side plank â€” right", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "duration": 10 },
+        { "type": "work", "label": "Side plank â€” left", "duration": 30, "countdown_last": 30 }
+      ]
+    },
+    "post-stretch-climb": {
+      "name": "Post-Session Stretch â€” Climbing",
+      "description": "After bouldering or climbing sessions. ~6 min.",
+      "sets": 1,
+      "blocks": [
+        { "type": "prepare", "label": "Chest opener. Arms back, open your chest, chin up", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Chest opener â€” hold", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Release. Shake it out", "duration": 8 },
+        { "type": "prepare", "label": "Shoulder cross stretch. Right arm across chest, left hand pulls it in", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Shoulder stretch â€” right", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left arm", "duration": 6 },
+        { "type": "work", "label": "Shoulder stretch â€” left", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Wrist extensor stretch. Arm out, palm down, pull fingers back with other hand", "duration": 6, "countdown_last": 3 },
+        { "type": "work", "label": "Wrist stretch â€” right", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left wrist", "duration": 6 },
+        { "type": "work", "label": "Wrist stretch â€” left", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Couch stretch. Right knee on floor against wall, hip forward for hip flexor", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Couch stretch â€” right hip", "duration": 45, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left side", "duration": 6 },
+        { "type": "work", "label": "Couch stretch â€” left hip", "duration": 45, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Standing QL stretch. Left arm overhead, lean to the right. Feel left side lengthen", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "QL stretch â€” left side", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Repeat left side", "duration": 6 },
+        { "type": "work", "label": "QL stretch â€” left side", "duration": 30, "countdown_last": 10 }
+      ]
+    },
+    "post-stretch-lift": {
+      "name": "Post-Session Stretch â€” Lifting",
+      "description": "After Tuesday and Saturday lifting sessions. ~7 min.",
+      "sets": 1,
+      "blocks": [
+        { "type": "prepare", "label": "Standing hamstring stretch. Foot on bench, hinge forward from hips, keep back flat", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Hamstring stretch â€” right", "duration": 40, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left leg", "duration": 6 },
+        { "type": "work", "label": "Hamstring stretch â€” left", "duration": 40, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Couch stretch. Right knee on floor against wall, hip forward for hip flexor", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Couch stretch â€” right hip", "duration": 45, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left side", "duration": 6 },
+        { "type": "work", "label": "Couch stretch â€” left hip", "duration": 45, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Standing QL stretch. Left arm overhead, lean to the right. Feel left side lengthen", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "QL stretch â€” left side", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Repeat left side", "duration": 6 },
+        { "type": "work", "label": "QL stretch â€” left side", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Chest opener. Arms back, open your chest, chin up", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Chest opener â€” hold", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Release", "duration": 8 },
+        { "type": "prepare", "label": "Wrist extensor stretch. Arm out, palm down, pull fingers back", "duration": 6, "countdown_last": 3 },
+        { "type": "work", "label": "Wrist stretch â€” right", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left wrist", "duration": 6 },
+        { "type": "work", "label": "Wrist stretch â€” left", "duration": 30, "countdown_last": 10 }
+      ]
+    },
+    "pre-warmup": {
+      "name": "Core & PT Warmup",
+      "description": "Daily pre-session warmup. ~10 min.",
+      "sets": 1,
+      "blocks": [
+        { "type": "prepare", "label": "Bird dog. Hands and knees. Extend right arm and left leg", "duration": 6, "countdown_last": 3 },
+        { "type": "work", "label": "Bird dog â€” right arm, left leg", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "label": "Switch. Left arm, right leg", "duration": 6 },
+        { "type": "work", "label": "Bird dog â€” left arm, right leg", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "Dead bug. On your back, arms up. Lower right arm and left leg", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Dead bug â€” right arm, left leg", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "label": "Switch. Left arm, right leg", "duration": 6 },
+        { "type": "work", "label": "Dead bug â€” left arm, right leg", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "Clamshell. On your right side, knees bent. Open top knee", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Clamshell â€” right side", "duration": 25, "countdown_last": 25 },
+        { "type": "rest", "label": "Switch to left side", "duration": 6 },
+        { "type": "work", "label": "Clamshell â€” left side", "duration": 25, "countdown_last": 25 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "Glute bridge. On your back, feet flat. Push hips up and hold", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Glute bridge â€” hold", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Lower down. Rest", "duration": 8 },
+        { "type": "work", "label": "Glute bridge â€” hold", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "Eccentric step-down. Stand on right foot. Slowly lower left foot, 3 to 4 seconds", "duration": 8, "countdown_last": 3 },
+        { "type": "work", "label": "Step-down â€” right foot", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Switch to left foot", "duration": 6 },
+        { "type": "work", "label": "Step-down â€” left foot", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Switch to right foot", "duration": 6 },
+        { "type": "work", "label": "Step-down â€” right foot", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Switch to left foot", "duration": 6 },
+        { "type": "work", "label": "Step-down â€” left foot", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "Side plank. On your right forearm. Hold body straight", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Side plank â€” right side", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Switch to left side", "duration": 6 },
+        { "type": "work", "label": "Side plank â€” left side", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Switch to right side", "duration": 6 },
+        { "type": "work", "label": "Side plank â€” right side", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Switch to left side", "duration": 6 },
+        { "type": "work", "label": "Side plank â€” left side", "duration": 30, "countdown_last": 30 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "Copenhagen plank. Side plank with top foot on a chair. Hold straight", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Copenhagen â€” right side", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "label": "Switch to left side", "duration": 6 },
+        { "type": "work", "label": "Copenhagen â€” left side", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "label": "Switch to right side", "duration": 6 },
+        { "type": "work", "label": "Copenhagen â€” right side", "duration": 20, "countdown_last": 20 },
+        { "type": "rest", "label": "Switch to left side", "duration": 6 },
+        { "type": "work", "label": "Copenhagen â€” left side", "duration": 20, "countdown_last": 20 }
+      ]
+    },
+    "thursday-mobility": {
+      "name": "Thursday Mobility",
+      "description": "QL release, scoliosis correction, thoracic mobility, full stretch. ~15 min.",
+      "sets": 1,
+      "blocks": [
+        { "type": "prepare", "label": "QL foam roll. Place roller lateral to left spine, between last rib and hip. Let gravity sink in", "duration": 8, "countdown_last": 3 },
+        { "type": "work", "label": "QL foam roll â€” left side", "duration": 120, "countdown_last": 10 },
+        { "type": "rest", "label": "Roll out. Rest", "duration": 10 },
+        { "type": "work", "label": "QL foam roll â€” left side", "duration": 60, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "McGill side bridge. RIGHT side only. On right forearm and feet stacked. Hold straight line", "duration": 8, "countdown_last": 3 },
+        { "type": "work", "label": "McGill side bridge â€” right", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest. Right side again", "duration": 8 },
+        { "type": "work", "label": "McGill side bridge â€” right", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest. Final set", "duration": 8 },
+        { "type": "work", "label": "McGill side bridge â€” right", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "Cat-cow. Hands and knees. Arch up then drop belly down slowly", "duration": 6, "countdown_last": 3 },
+        { "type": "work", "label": "Cat-cow â€” 10 reps slow", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Thread the needle. Hands and knees. Slide right arm under body and rotate", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Thread the needle â€” right", "duration": 20, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left", "duration": 6 },
+        { "type": "work", "label": "Thread the needle â€” left", "duration": 20, "countdown_last": 10 },
+        { "type": "rest", "label": "Repeat right", "duration": 6 },
+        { "type": "work", "label": "Thread the needle â€” right", "duration": 20, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left", "duration": 6 },
+        { "type": "work", "label": "Thread the needle â€” left", "duration": 20, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 10 },
+        { "type": "prepare", "label": "90/90 hip stretch. Sit with front and back legs at 90 degrees. Sit tall", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "90/90 â€” right hip forward", "duration": 45, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch sides", "duration": 8 },
+        { "type": "work", "label": "90/90 â€” left hip forward", "duration": 45, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Couch stretch. Right knee against wall, hip forward. Deep hip flexor stretch", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "Couch stretch â€” right", "duration": 45, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left", "duration": 6 },
+        { "type": "work", "label": "Couch stretch â€” left", "duration": 45, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Standing QL stretch. Left arm overhead, lean right. Feel the left side open up", "duration": 7, "countdown_last": 3 },
+        { "type": "work", "label": "QL stretch â€” left side", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Hold again", "duration": 6 },
+        { "type": "work", "label": "QL stretch â€” left side", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Doorway chest stretch. Forearms on door frame, lean forward gently", "duration": 5, "countdown_last": 3 },
+        { "type": "work", "label": "Chest stretch â€” hold", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 6 },
+        { "type": "work", "label": "Chest stretch â€” hold", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Rest", "duration": 8 },
+        { "type": "prepare", "label": "Wrist extensor stretch. Arm out, palm down, pull fingers back gently", "duration": 6, "countdown_last": 3 },
+        { "type": "work", "label": "Wrist stretch â€” right", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left", "duration": 6 },
+        { "type": "work", "label": "Wrist stretch â€” left", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to right", "duration": 6 },
+        { "type": "work", "label": "Wrist stretch â€” right", "duration": 30, "countdown_last": 10 },
+        { "type": "rest", "label": "Switch to left", "duration": 6 },
+        { "type": "work", "label": "Wrist stretch â€” left", "duration": 30, "countdown_last": 10 }
+      ]
+    }
+  }
+}
