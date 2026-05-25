@@ -15,6 +15,11 @@ Internally, the timer still uses blocks of:
 
 But you no longer need to author raw JSON routine files for normal use.
 
+The format is designed to be audio-first:
+- a user should be able to follow the routine without watching the screen
+- spoken setup and transition cues should stay explicit in the compact string
+- only use unlabeled `rest` blocks for true quiet recovery periods
+
 ## Main Format
 
 Use the `x` query parameter for a compact routine string.
@@ -61,12 +66,18 @@ Repeated blocks should be written explicitly.
 Example:
 - `p5@3,w10@3,r20,w10@3,r20,w10@3`
 
+Audio-first example:
+- `Single leg bridge^Right side ready~p5@3,w30@10,r6^Switch to left side,w30@10,r10^Rest!`
+
 ## Speech Behavior
 
 - `prepare` speaks the prepare label
 - `work` speaks `Start`
 - `rest` speaks its label if present, otherwise `Rest`
 - `countdown_last` is set explicitly per token with `@N`
+
+Guideline:
+- if a transition matters for hands-free use, encode it as a spoken prepare label or a spoken rest cue
 
 ## Home Screen
 

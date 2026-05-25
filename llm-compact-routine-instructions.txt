@@ -7,6 +7,11 @@ If you are updating another repo:
 - do not invent alternate syntax
 - do not assume deprecated params like `cd`
 
+Core design goal:
+- this format is audio-first
+- a user should be able to follow the routine without looking at the screen
+- preserve spoken setup cues and spoken transition cues, not just timings
+
 
 1. URL SHAPE
 
@@ -60,6 +65,10 @@ Examples:
 - `4-finger half crimp`
 - `Front-2 open^Front-2 open, index and middle`
 
+Guidance:
+- use `Prepare Label` when the spoken setup cue should be more explicit than the work label
+- prefer full spoken phrases over short visual labels when the routine is intended for hands-free use
+
 
 4. PATTERN SECTIONS
 
@@ -101,6 +110,7 @@ Definitions:
   - optional
   - valid for rest tokens
   - gives the rest block spoken text
+  - use this for transitions like `Switch sides`, `Shake it out`, or `Move to the floor`
 - `!`
   - optional
   - sets `skip_on_last: true`
@@ -146,6 +156,11 @@ Expansion rules:
 - `!` becomes:
   - `skip_on_last: true`
 
+Audio-first interpretation:
+- use unlabeled `r...` only for true generic recovery periods
+- if the user needs spoken guidance during a rest, the rest token should carry `^<rest_label>`
+- do not silently drop meaningful rest speech during conversion
+
 
 8. EXAMPLE EXPANSION
 
@@ -177,7 +192,20 @@ Example URL:
 `https://something.com/?x=Abrahangs~4-finger%20half%20crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~3-finger%20drag~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~Front-2%20open^Front-2%20open,%20index%20and%20middle~p5@3,w10@3,r20,w10@3,r20~Middle-2%20open^Middle-2%20open,%20middle%20and%20ring~p5@3,w10@3,r20,w10@3,r20~Front-2%20half%20crimp^Front-2%20half%20crimp,%20index%20and%20middle~p5@3,w10@3,r20,w10@3,r20~Middle-2%20half%20crimp^Middle-2%20half%20crimp,%20middle%20and%20ring~p5@3,w10@3,r20,w10@3,r10!`
 
 
-10. RESERVED CHARACTERS
+10. AUDIO-FIRST EXAMPLE
+
+Compact string:
+
+`Single leg bridge^Right side ready~p5@3,w30@10,r6^Switch to left side,w30@10,r10^Rest!`
+
+Meaning:
+- prepare speaks `Right side ready`
+- first work block uses `Single leg bridge`
+- rest speaks `Switch to left side`
+- second work block uses `Single leg bridge`
+- final rest speaks `Rest`
+
+11. RESERVED CHARACTERS
 
 These characters have syntax meaning and should not appear raw in labels unless your producer and consumer both agree on an escaping scheme:
 
@@ -192,7 +220,7 @@ If generating labels for this format, avoid those characters in labels.
 The letter `x` is not reserved in labels.
 
 
-11. GENERATION RULES FOR LLMS
+12. GENERATION RULES FOR LLMS
 
 If generating a compact routine string:
 - output only the compact routine string unless asked otherwise
@@ -200,11 +228,12 @@ If generating a compact routine string:
 - use `@N` on any token that needs a countdown
 - write repeated blocks explicitly
 - use `r<duration>^<spoken text>` when a rest block needs spoken transition guidance
+- do not collapse spoken transition rests into silent `r...` blocks
 - use `!` only when the block should become `skip_on_last: true`
 - do not output JSON unless explicitly requested
 
 
-12. CONSUMER RULES FOR IMPLEMENTATIONS
+13. CONSUMER RULES FOR IMPLEMENTATIONS
 
 If implementing a parser in another repo:
 - split on `~`
@@ -216,9 +245,10 @@ If implementing a parser in another repo:
 - map rest-token `^label` to `label`
 - map `!` to `skip_on_last`
 - build the equivalent internal routine object
+- preserve spoken rest cues so the routine remains hands-free friendly
 
 
-13. COPY-PASTE PROMPT FOR AN LLM
+14. COPY-PASTE PROMPT FOR AN LLM
 
 Use the attached compact timer format spec as the source of truth.
 
@@ -232,4 +262,5 @@ Important:
 - `Label^Prepare Label` means work label differs from prepare label
 - `r6^Switch to left side` means a spoken transition rest cue
 - `!` means `skip_on_last: true`
+- Preserve audio-first behavior so a user can follow the routine without looking at the screen
 - Do not invent alternate syntax
