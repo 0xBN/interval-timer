@@ -43,19 +43,19 @@ Example:
 `p5,w10,r20,w10,r20,w10`
 
 
-IMPORTANT LIMITATION
+REPEAT SHORTHAND
 
-Do not use compressed repeat notation like `r20x5`.
+The parser supports `xN` repetition on a single token.
 
-The current parser expects each repeated block explicitly written out.
+Examples:
 
-Use this:
+- `r20x5` = five `rest 20` blocks
+- `w10x6` = six `work 10` blocks
+- `p5x2` = two `prepare 5` blocks
 
-`p5,w10,r20,w10,r20,w10,r20,w10`
+Example:
 
-Not this:
-
-`p5,w10,r20x3,w10`
+`p5,w10,r20x5,w10`
 
 
 COUNTDOWN
