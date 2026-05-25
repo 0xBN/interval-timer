@@ -84,9 +84,15 @@ Examples:
 
 5. TOKEN GRAMMAR
 
-Each token matches:
+There are two token forms:
 
-`<type><duration>[ @<countdown> ][ ^<rest_label> ][ ! ]`
+Prepare/work token:
+
+`<type><duration>[ @<countdown> ][ ! ]`
+
+Rest token:
+
+`r<duration>[ @<countdown> ][ ^<rest_label> ][ ! ]`
 
 Practical forms:
 - `p5`
@@ -95,6 +101,7 @@ Practical forms:
 - `r20`
 - `r6^Switch to left side`
 - `r10!`
+- `r10^Rest!`
 
 Definitions:
 - `type`
@@ -115,6 +122,17 @@ Definitions:
   - optional
   - sets `skip_on_last: true`
   - currently intended for final rest-style blocks
+  - if present, it must appear only as the final character of the token
+
+Parsing note:
+- `^` has different meanings in different contexts
+- in label sections, `Work Label^Prepare Label` splits work vs prepare labels
+- in pattern sections, only rest tokens may use `^<rest_label>`
+- for rest tokens, if `^` is present, the rest label is all text after `^` up to an optional trailing `!`
+- example: `r10^Rest!` parses as:
+  - duration `10`
+  - label `Rest`
+  - `skip_on_last: true`
 
 
 6. TOKEN SEMANTICS
@@ -133,6 +151,8 @@ Examples:
   - rest, duration 6, spoken label `Switch to left side`
 - `r10!`
   - rest, duration 10, skip_on_last true
+- `r10^Rest!`
+  - rest, duration 10, spoken label `Rest`, skip_on_last true
 
 
 7. BLOCK EXPANSION MODEL
@@ -240,12 +260,22 @@ If implementing a parser in another repo:
 - validate odd segment count and label/pattern pairing
 - split label section on the first `^`
 - split pattern section on `,`
-- parse tokens according to the grammar above
+- parse prepare/work tokens separately from rest tokens
+- treat `!` only as a terminal suffix
+- for rest tokens, if `^` exists, treat everything after `^` as the spoken rest label except a trailing `!`
 - map `@N` to `countdown_last`
 - map rest-token `^label` to `label`
 - map `!` to `skip_on_last`
 - build the equivalent internal routine object
 - preserve spoken rest cues so the routine remains hands-free friendly
+
+Recommended parsing order for a single token:
+- detect whether the final character is `!`
+- if so, remove the trailing `!` and remember `skip_on_last: true`
+- if the token is a rest token and contains `^`, split on the first `^`
+- parse the left side as the rest token core
+- treat the right side as the spoken rest label
+- parse the remaining token core for `type`, `duration`, and optional `@countdown`
 
 
 14. COPY-PASTE PROMPT FOR AN LLM
