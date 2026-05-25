@@ -1,27 +1,59 @@
-LLM INSTRUCTIONS FOR COMPACT TIMER URL FORMAT
+COMPACT TIMER URL FORMAT: SOURCE OF TRUTH
 
-Goal:
-- Output a compact routine string for the `x` URL parameter
-- Preserve full spoken labels for text-to-speech
-- Do not output JSON unless explicitly asked
+Use this spec as the exact format definition for generating or consuming timer routines.
 
-
-OUTPUT FORMAT
-
-Return only the compact routine string unless asked for explanation.
-
-Structure:
-
-Routine Name~Label Section 1~Pattern 1~Label Section 2~Pattern 2~...
+If you are updating another repo:
+- implement this format exactly
+- do not invent alternate syntax
+- do not assume deprecated params like `cd`
 
 
-LABEL SECTION RULES
+1. URL SHAPE
 
+Active format:
+
+`?x=<compact-routine>`
+
+Deprecated compatibility format:
+
+`?r=<url-encoded-json>`
+
+If building new functionality, only use `?x=...`.
+
+
+2. TOP-LEVEL STRUCTURE
+
+The `x` param value is a compact routine string:
+
+`Routine Name~Label Section 1~Pattern 1~Label Section 2~Pattern 2~...`
+
+Rules:
+- first segment is always the routine name
+- after that, segments come in pairs
+- each pair is:
+  - label section
+  - pattern section
+- therefore, total segment count must be odd
+
+Example:
+
+`Abrahangs~4-finger half crimp~p5@3,w10@3,r20,w10@3`
+
+
+3. LABEL SECTIONS
+
+There are two valid label section forms:
+
+1. `Work Label`
+2. `Work Label^Prepare Label`
+
+Meaning:
 - `Work Label`
-  Use this when the prepare cue and work label are the same.
-
+  - work blocks use this label
+  - prepare blocks also use this label
 - `Work Label^Prepare Label`
-  Use this when the prepare spoken cue should be different from the work label.
+  - work blocks use `Work Label`
+  - prepare blocks use `Prepare Label`
 
 Examples:
 
@@ -29,82 +61,172 @@ Examples:
 - `Front-2 open^Front-2 open, index and middle`
 
 
-PATTERN RULES
+4. PATTERN SECTIONS
 
-- `p5` = prepare for 5 seconds
-- `p5@3` = prepare for 5 seconds with `countdown_last: 3`
-- `w10` = work for 10 seconds
-- `w10@10` = work for 10 seconds with `countdown_last: 10`
-- `r20` = rest for 20 seconds
-- `r10!` = final rest for 10 seconds, marked `skip_on_last`
+Pattern sections are comma-separated token lists:
 
-Patterns are comma-separated.
-
-Example:
-
-`p5,w10,r20,w10,r20,w10`
-
-
-REPEAT SHORTHAND
-
-Repeat shorthand is allowed.
+`token,token,token,...`
 
 Examples:
 
-- `r20x5` = five `rest 20` blocks
-- `w10x6` = six `work 10` blocks
-- `p5x2` = two `prepare 5` blocks
-- `w30@10x2` = two `work 30` blocks, each with `countdown_last: 10`
-
-Example:
-
-`p5@3,w10@3,r20x5,w10@3`
+- `p5@3,w10@3,r20,w10@3`
+- `p5@3,w10@3x6,r20!`
 
 
-COUNTDOWN
+5. TOKEN GRAMMAR
 
-Countdown is expressed directly in tokens with `@N`.
+Each token matches:
 
-Example:
+`<type><duration>[ @<countdown> ][ x<repeat> ][ ! ]`
 
-`w30@10`
+Practical forms:
+- `p5`
+- `p5@3`
+- `w30@10`
+- `r20`
+- `w10@3x6`
+- `r10!`
 
-Unless told otherwise, assume:
+Definitions:
+- `type`
+  - `p` = prepare
+  - `w` = work
+  - `r` = rest
+- `duration`
+  - integer number of seconds
+- `@<countdown>`
+  - optional
+  - sets `countdown_last`
+- `x<repeat>`
+  - optional
+  - repeats the token N times
+- `!`
+  - optional
+  - sets `skip_on_last: true`
+  - currently intended for final rest-style blocks
 
-- use `@N` on every token that needs a countdown
+
+6. TOKEN SEMANTICS
+
+Examples:
+
+- `p5`
+  - prepare, duration 5
+- `p5@3`
+  - prepare, duration 5, countdown_last 3
+- `w30@10`
+  - work, duration 30, countdown_last 10
+- `r20`
+  - rest, duration 20
+- `w10@3x6`
+  - six work blocks
+  - each duration 10
+  - each countdown_last 3
+- `r10!`
+  - rest, duration 10, skip_on_last true
 
 
-FULL URL SHAPE
+7. BLOCK EXPANSION MODEL
 
-`https://something.com/?x=<compact-routine>`
+Consumers should expand the compact format into the equivalent internal block array.
+
+Expansion rules:
+- `p...` creates a block:
+  - `type: "prepare"`
+  - `label: prepare label`
+- `w...` creates a block:
+  - `type: "work"`
+  - `label: work label`
+- `r...` creates a block:
+  - `type: "rest"`
+  - no label by default unless your consumer adds one separately
+- `@N` becomes:
+  - `countdown_last: N`
+- `!` becomes:
+  - `skip_on_last: true`
+- `xN` repeats the token N times as N expanded blocks
 
 
-EXAMPLE: ABRAHANGS
+8. EXAMPLE EXPANSION
+
+Compact input:
+
+`Grip A^Grip A, get set~p5@3,w10@3,r20,w10@3,r10!`
+
+Expanded blocks:
+
+```json
+[
+  { "type": "prepare", "label": "Grip A, get set", "duration": 5, "countdown_last": 3 },
+  { "type": "work", "label": "Grip A", "duration": 10, "countdown_last": 3 },
+  { "type": "rest", "duration": 20 },
+  { "type": "work", "label": "Grip A", "duration": 10, "countdown_last": 3 },
+  { "type": "rest", "duration": 10, "skip_on_last": true }
+]
+```
+
+
+9. ABRAHANGS EXAMPLE
 
 Compact string:
 
-Abrahangs~4-finger half crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~3-finger drag~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~Front-2 open^Front-2 open, index and middle~p5@3,w10@3,r20,w10@3,r20~Middle-2 open^Middle-2 open, middle and ring~p5@3,w10@3,r20,w10@3,r20~Front-2 half crimp^Front-2 half crimp, index and middle~p5@3,w10@3,r20,w10@3,r20~Middle-2 half crimp^Middle-2 half crimp, middle and ring~p5@3,w10@3,r20,w10@3,r10!
+`Abrahangs~4-finger half crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~3-finger drag~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~Front-2 open^Front-2 open, index and middle~p5@3,w10@3,r20,w10@3,r20~Middle-2 open^Middle-2 open, middle and ring~p5@3,w10@3,r20,w10@3,r20~Front-2 half crimp^Front-2 half crimp, index and middle~p5@3,w10@3,r20,w10@3,r20~Middle-2 half crimp^Middle-2 half crimp, middle and ring~p5@3,w10@3,r20,w10@3,r10!`
 
 Example URL:
 
-https://something.com/?x=Abrahangs~4-finger%20half%20crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~3-finger%20drag~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~Front-2%20open^Front-2%20open,%20index%20and%20middle~p5@3,w10@3,r20,w10@3,r20~Middle-2%20open^Middle-2%20open,%20middle%20and%20ring~p5@3,w10@3,r20,w10@3,r20~Front-2%20half%20crimp^Front-2%20half%20crimp,%20index%20and%20middle~p5@3,w10@3,r20,w10@3,r20~Middle-2%20half%20crimp^Middle-2%20half%20crimp,%20middle%20and%20ring~p5@3,w10@3,r20,w10@3,r10!
+`https://something.com/?x=Abrahangs~4-finger%20half%20crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~3-finger%20drag~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~Front-2%20open^Front-2%20open,%20index%20and%20middle~p5@3,w10@3,r20,w10@3,r20~Middle-2%20open^Middle-2%20open,%20middle%20and%20ring~p5@3,w10@3,r20,w10@3,r20~Front-2%20half%20crimp^Front-2%20half%20crimp,%20index%20and%20middle~p5@3,w10@3,r20,w10@3,r20~Middle-2%20half%20crimp^Middle-2%20half%20crimp,%20middle%20and%20ring~p5@3,w10@3,r20,w10@3,r10!`
 
 
-PROMPT TEMPLATE
+10. RESERVED CHARACTERS
 
-Generate a compact timer routine string for this URL-based interval timer.
+These characters have syntax meaning and should not appear raw in labels unless your producer and consumer both agree on an escaping scheme:
 
-Requirements:
-- Output only the compact routine string
-- Use the format: `Routine Name~Label~pattern~Label^Prepare Label~pattern`
-- Use `p` for prepare, `w` for work, `r` for rest
-- Use `@N` on every token that needs a countdown
-- Use `~` to separate sections
-- Use `^` when the prepare spoken cue should differ from the work label
-- Use `!` on a final rest block that should be marked `skip_on_last`
-- Repeat shorthand like `xN` is allowed
-- Keep the full spoken labels
-- Do not output JSON
+- `~`
+- `^`
+- `,`
+- `@`
+- `x`
+- `!`
 
-Workout request:
-- [insert workout description here]
+If generating labels for this format, avoid those characters in labels.
+
+
+11. GENERATION RULES FOR LLMS
+
+If generating a compact routine string:
+- output only the compact routine string unless asked otherwise
+- keep all spoken labels fully explicit
+- use `@N` on any token that needs a countdown
+- use `xN` only when it is semantically correct to repeat that exact token
+- use `!` only when the block should become `skip_on_last: true`
+- do not output JSON unless explicitly requested
+
+
+12. CONSUMER RULES FOR IMPLEMENTATIONS
+
+If implementing a parser in another repo:
+- split on `~`
+- validate odd segment count and label/pattern pairing
+- split label section on the first `^`
+- split pattern section on `,`
+- parse tokens according to the grammar above
+- expand `xN` into repeated blocks
+- map `@N` to `countdown_last`
+- map `!` to `skip_on_last`
+- build the equivalent internal routine object
+
+
+13. COPY-PASTE PROMPT FOR AN LLM
+
+Use the attached compact timer format spec as the source of truth.
+
+Update my codebase so it consumes this format exactly.
+
+Important:
+- The active format is `?x=...`
+- Do not use deprecated `cd`
+- Countdowns are explicit per token with `@N`
+- `xN` repeat shorthand is allowed
+- `Label^Prepare Label` means work label differs from prepare label
+- `!` means `skip_on_last: true`
+- Do not invent alternate syntax
