@@ -17,18 +17,20 @@ But you no longer need to author raw JSON routine files for normal use.
 
 ## Main Format
 
-Use the `x` query parameter for a compact routine string and `cd` for the work countdown.
+Use the `x` query parameter for a compact routine string.
+
+Use `@N` inside tokens whenever a block needs a countdown.
 
 Example:
 
 ```text
-https://0xbn.github.io/interval-timer/?x=Abrahangs~4-finger%20half%20crimp~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20&cd=3
+https://0xbn.github.io/interval-timer/?x=Abrahangs~4-finger%20half%20crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20
 ```
 
 General shape:
 
 ```text
-?x=Routine Name~Label Section 1~Pattern 1~Label Section 2~Pattern 2&cd=3
+?x=Routine Name~Label Section 1~Pattern 1~Label Section 2~Pattern 2
 ```
 
 ## Compact Routine Grammar
@@ -47,7 +49,9 @@ Rules:
 
 Pattern tokens:
 - `p5` = prepare 5 seconds
+- `p5@3` = prepare 5 seconds with `countdown_last: 3`
 - `w10` = work 10 seconds
+- `w10@10` = work 10 seconds with `countdown_last: 10`
 - `r20` = rest 20 seconds
 - `r10!` = rest 10 seconds with `skip_on_last`
 
@@ -57,14 +61,14 @@ Repeat shorthand:
 - `r20x5` = five rest blocks of 20 seconds
 
 Example:
-- `p5,w10,r20x5,w10`
+- `p5@3,w10@3,r20,w10@3,r20x2`
 
 ## Speech Behavior
 
 - `prepare` speaks the prepare label
 - `work` speaks `Start`
 - `rest` speaks its label if present, otherwise `Rest`
-- `countdown_last` is controlled by `cd` in the URL for compact routines
+- `countdown_last` is set explicitly per token with `@N`
 
 ## Home Screen
 
@@ -103,5 +107,5 @@ See [abrahangs-url-example.txt](/abs/path/C:/Users/Brian%20Nguyen/code/test/inte
 The app still accepts the older `?r=` JSON URL format for compatibility, but the intended format going forward is:
 
 ```text
-?x=...&cd=...
+?x=...
 ```

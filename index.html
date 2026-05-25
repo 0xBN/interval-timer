@@ -1688,47 +1688,49 @@
       };
     }
 
-    function parseCompactCountdown(value, fallback = 3) {
-      const n = parseInt(value, 10);
-      return Number.isFinite(n) && n >= 0 ? n : fallback;
-    }
-
-    function expandCompactToken(token, labels, countdown) {
+    function expandCompactToken(token, labels) {
       const trimmed = token.trim();
       if (!trimmed) return [];
 
-      const repeatMatch = trimmed.match(/^([prw])(\d+)x(\d+)$/i);
+      const repeatMatch = trimmed.match(/^([prw])(\d+)(?:@(\d+))?x(\d+)$/i);
       if (repeatMatch) {
-        const [, typeCode, durationStr, repeatStr] = repeatMatch;
+        const [, typeCode, durationStr, tokenCountdownStr, repeatStr] = repeatMatch;
         const out = [];
         for (let i = 0; i < parseInt(repeatStr, 10); i++) {
-          out.push(...expandCompactToken(`${typeCode}${durationStr}`, labels, countdown));
+          const repeatedToken = tokenCountdownStr == null
+            ? `${typeCode}${durationStr}`
+            : `${typeCode}${durationStr}@${tokenCountdownStr}`;
+          out.push(...expandCompactToken(repeatedToken, labels));
         }
         return out;
       }
 
       const skipOnLast = trimmed.endsWith('!');
       const core = skipOnLast ? trimmed.slice(0, -1) : trimmed;
-      const match = core.match(/^([prw])(\d+)$/i);
+      const match = core.match(/^([prw])(\d+)(?:@(\d+))?$/i);
       if (!match) throw new Error(`Invalid token: ${trimmed}`);
 
-      const [, typeCode, durationStr] = match;
+      const [, typeCode, durationStr, tokenCountdownStr] = match;
       const typeMap = { p: 'prepare', r: 'rest', w: 'work' };
       const type = typeMap[typeCode.toLowerCase()];
       const duration = parseInt(durationStr, 10);
+      const tokenCountdown = tokenCountdownStr == null ? 0 : parseInt(tokenCountdownStr, 10);
       const block = { type, duration };
 
-      if (type === 'prepare') block.label = labels.prepare;
+      if (type === 'prepare') {
+        block.label = labels.prepare;
+        if (tokenCountdown > 0) block.countdown_last = tokenCountdown;
+      }
       if (type === 'work') {
         block.label = labels.work;
-        if (countdown > 0) block.countdown_last = countdown;
+        if (tokenCountdown > 0) block.countdown_last = tokenCountdown;
       }
       if (skipOnLast) block.skip_on_last = true;
 
       return [block];
     }
 
-    function parseCompactRoutineV2(raw, countdown = 3) {
+    function parseCompactRoutineV2(raw) {
       const decoded = decodeURIComponent(raw || '');
       const parts = decoded.split('~').map(s => s.trim()).filter(Boolean);
       if (parts.length < 3) throw new Error('Compact routine must include a name and at least one label/pattern pair.');
@@ -1745,7 +1747,7 @@
         };
 
         pattern.split(',').forEach(token => {
-          blocks.push(...expandCompactToken(token, labels, countdown));
+          blocks.push(...expandCompactToken(token, labels));
         });
       }
 
@@ -1781,7 +1783,7 @@
       const raw = document.getElementById('pasteInput').value.trim();
       const err = document.getElementById('pasteErr');
       try {
-        const r = parseCompactRoutineV2(raw, 3);
+        const r = parseCompactRoutineV2(raw);
         err.classList.remove('show');
         startRoutine(r);
       } catch (e) {
@@ -1794,11 +1796,10 @@
       try {
         const params = new URLSearchParams(window.location.search);
         const compact = params.get('x');
-        const countdown = parseCompactCountdown(params.get('cd'), 3);
         const raw = params.get('r');
 
         if (compact) {
-          startRoutine(parseCompactRoutineV2(compact, countdown), false);
+          startRoutine(parseCompactRoutineV2(compact), false);
           return true;
         }
 

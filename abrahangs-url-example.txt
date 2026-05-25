@@ -2,15 +2,15 @@ ABRAHANGS URL COMPARISON
 
 This compares:
 - BEFORE = current approach, where the full routine JSON is URL-encoded into `?r=`
-- AFTER = proposed compact format, where labels are preserved but block structure is compressed into a short pattern syntax
+- AFTER = proposed compact format, where labels are preserved, block structure is compressed, and countdowns can be expressed per token
 
 
 CHAR COUNTS
 
 - Before URL length: 4655 characters
-- After URL length: 482 characters
-- Reduction: 4173 characters
-- Size reduction: about 89.6%
+- After URL length: 566 characters
+- Reduction: 4089 characters
+- Size reduction: about 87.8%
 
 
 BEFORE: EXACT URL SHAPE USING CURRENT JSON APPROACH
@@ -28,11 +28,11 @@ AFTER: EXACT URL SHAPE USING COMPACT PATTERN APPROACH
 
 Parameter:
 
-?x=Abrahangs~4-finger%20half%20crimp~p5%2Cw10%2Cr20x5%2Cw10~3-finger%20drag~p5%2Cw10%2Cr20x5%2Cw10~Front-2%20open%5EFront-2%20open%2C%20index%20and%20middle~p5%2Cw10%2Cr20%2Cw10~Middle-2%20open%5EMiddle-2%20open%2C%20middle%20and%20ring~p5%2Cw10%2Cr20%2Cw10~Front-2%20half%20crimp%5EFront-2%20half%20crimp%2C%20index%20and%20middle~p5%2Cw10%2Cr20%2Cw10~Middle-2%20half%20crimp%5EMiddle-2%20half%20crimp%2C%20middle%20and%20ring~p5%2Cw10%2Cr20%2Cw10%2Cr10!&cd=3
+?x=Abrahangs~4-finger%20half%20crimp~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20~3-finger%20drag~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20~Front-2%20open%5EFront-2%20open%2C%20index%20and%20middle~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20~Middle-2%20open%5EMiddle-2%20open%2C%20middle%20and%20ring~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20~Front-2%20half%20crimp%5EFront-2%20half%20crimp%2C%20index%20and%20middle~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20~Middle-2%20half%20crimp%5EMiddle-2%20half%20crimp%2C%20middle%20and%20ring~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr10!
 
 Full URL:
 
-https://something.com/?x=Abrahangs~4-finger%20half%20crimp~p5%2Cw10%2Cr20x5%2Cw10~3-finger%20drag~p5%2Cw10%2Cr20x5%2Cw10~Front-2%20open%5EFront-2%20open%2C%20index%20and%20middle~p5%2Cw10%2Cr20%2Cw10~Middle-2%20open%5EMiddle-2%20open%2C%20middle%20and%20ring~p5%2Cw10%2Cr20%2Cw10~Front-2%20half%20crimp%5EFront-2%20half%20crimp%2C%20index%20and%20middle~p5%2Cw10%2Cr20%2Cw10~Middle-2%20half%20crimp%5EMiddle-2%20half%20crimp%2C%20middle%20and%20ring~p5%2Cw10%2Cr20%2Cw10%2Cr10!&cd=3
+https://something.com/?x=Abrahangs~4-finger%20half%20crimp~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20~3-finger%20drag~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20%2Cw10@3%2Cr20~Front-2%20open%5EFront-2%20open%2C%20index%20and%20middle~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20~Middle-2%20open%5EMiddle-2%20open%2C%20middle%20and%20ring~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20~Front-2%20half%20crimp%5EFront-2%20half%20crimp%2C%20index%20and%20middle~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr20~Middle-2%20half%20crimp%5EMiddle-2%20half%20crimp%2C%20middle%20and%20ring~p5@3%2Cw10@3%2Cr20%2Cw10@3%2Cr10!
 
 
 COMPACT FORMAT LEGEND
@@ -43,7 +43,7 @@ COMPACT FORMAT LEGEND
 - `w10` = work 10 seconds
 - `r20` = rest 20 seconds
 - `r20x5,w10` = repeat "rest 20 + work 10" five more times after the first work
-- `cd=3` = apply `countdown_last: 3` to all work blocks
+- `@3` on a token = apply `countdown_last: 3` to that block
 
 
 WHY THE AFTER VERSION IS SHORTER
@@ -51,5 +51,5 @@ WHY THE AFTER VERSION IS SHORTER
 - It keeps all spoken labels
 - It removes repeated JSON keys
 - It removes repeated object punctuation
-- It removes repeated `countdown_last` entries from every work block
+- It can preserve per-block countdown behavior from the old JSON by using `@N`
 - It compresses repeated work/rest sequences into short pattern notation

@@ -32,7 +32,9 @@ Examples:
 PATTERN RULES
 
 - `p5` = prepare for 5 seconds
+- `p5@3` = prepare for 5 seconds with `countdown_last: 3`
 - `w10` = work for 10 seconds
+- `w10@10` = work for 10 seconds with `countdown_last: 10`
 - `r20` = rest for 20 seconds
 - `r10!` = final rest for 10 seconds, marked `skip_on_last`
 
@@ -45,47 +47,47 @@ Example:
 
 REPEAT SHORTHAND
 
-The parser supports `xN` repetition on a single token.
+Repeat shorthand is allowed.
 
 Examples:
 
 - `r20x5` = five `rest 20` blocks
 - `w10x6` = six `work 10` blocks
 - `p5x2` = two `prepare 5` blocks
+- `w30@10x2` = two `work 30` blocks, each with `countdown_last: 10`
 
 Example:
 
-`p5,w10,r20x5,w10`
+`p5@3,w10@3,r20x5,w10@3`
 
 
 COUNTDOWN
 
-Countdown is passed separately in the URL with `cd`.
+Countdown is expressed directly in tokens with `@N`.
 
 Example:
 
-`&cd=3`
+`w30@10`
 
 Unless told otherwise, assume:
 
-- `cd=3` for hang-style timers
-- longer countdowns only when explicitly requested
+- use `@N` on every token that needs a countdown
 
 
 FULL URL SHAPE
 
-`https://something.com/?x=<compact-routine>&cd=3`
+`https://something.com/?x=<compact-routine>`
 
 
 EXAMPLE: ABRAHANGS
 
 Compact string:
 
-Abrahangs~4-finger half crimp~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20~3-finger drag~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20~Front-2 open^Front-2 open, index and middle~p5,w10,r20,w10,r20~Middle-2 open^Middle-2 open, middle and ring~p5,w10,r20,w10,r20~Front-2 half crimp^Front-2 half crimp, index and middle~p5,w10,r20,w10,r20~Middle-2 half crimp^Middle-2 half crimp, middle and ring~p5,w10,r20,w10,r10!
+Abrahangs~4-finger half crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~3-finger drag~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~Front-2 open^Front-2 open, index and middle~p5@3,w10@3,r20,w10@3,r20~Middle-2 open^Middle-2 open, middle and ring~p5@3,w10@3,r20,w10@3,r20~Front-2 half crimp^Front-2 half crimp, index and middle~p5@3,w10@3,r20,w10@3,r20~Middle-2 half crimp^Middle-2 half crimp, middle and ring~p5@3,w10@3,r20,w10@3,r10!
 
 Example URL:
 
-https://something.com/?x=Abrahangs~4-finger%20half%20crimp~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20~3-finger%20drag~p5,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20,w10,r20~Front-2%20open^Front-2%20open,%20index%20and%20middle~p5,w10,r20,w10,r20~Middle-2%20open^Middle-2%20open,%20middle%20and%20ring~p5,w10,r20,w10,r20~Front-2%20half%20crimp^Front-2%20half%20crimp,%20index%20and%20middle~p5,w10,r20,w10,r20~Middle-2%20half%20crimp^Middle-2%20half%20crimp,%20middle%20and%20ring~p5,w10,r20,w10,r10!&cd=3
+https://something.com/?x=Abrahangs~4-finger%20half%20crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~3-finger%20drag~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20~Front-2%20open^Front-2%20open,%20index%20and%20middle~p5@3,w10@3,r20,w10@3,r20~Middle-2%20open^Middle-2%20open,%20middle%20and%20ring~p5@3,w10@3,r20,w10@3,r20~Front-2%20half%20crimp^Front-2%20half%20crimp,%20index%20and%20middle~p5@3,w10@3,r20,w10@3,r20~Middle-2%20half%20crimp^Middle-2%20half%20crimp,%20middle%20and%20ring~p5@3,w10@3,r20,w10@3,r10!
 
 
 PROMPT TEMPLATE
@@ -96,7 +98,11 @@ Requirements:
 - Output only the compact routine string
 - Use the format: `Routine Name~Label~pattern~Label^Prepare Label~pattern`
 - Use `p` for prepare, `w` for work, `r` for rest
-- Write every repeated block explicitly
+- Use `@N` on every token that needs a countdown
+- Use `~` to separate sections
+- Use `^` when the prepare spoken cue should differ from the work label
+- Use `!` on a final rest block that should be marked `skip_on_last`
+- Repeat shorthand like `xN` is allowed
 - Keep the full spoken labels
 - Do not output JSON
 
