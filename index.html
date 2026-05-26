@@ -1384,7 +1384,7 @@
       if (b.type === 'prepare') {
         speak(`${b.label}`);
       } else if (b.type === 'work') {
-        speak('Start');
+        speak(b.label || 'Start');
       } else if (b.type === 'rest') {
         speak(b.label || 'Rest');
       }
