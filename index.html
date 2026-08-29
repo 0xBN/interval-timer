@@ -1394,12 +1394,24 @@
       ticker = setInterval(tick, 1000);
     }
 
+    // Rest needs a hop-back-on cue even when the routine omitted countdown_last.
+    // Short transition rests (under 20s) stay quiet so they don't beep the whole cue.
+    function effectiveCountdown(b) {
+      if (b.countdown_last > 0) return b.countdown_last;
+      if (b.type === 'rest' && b.duration >= 20) return Math.min(10, b.duration - 1);
+      return 0;
+    }
+
     function tick() {
       if (paused) return;
       timeLeft--; elapsed++;
       const b = flat[blockIdx];
-      const cd = b.countdown_last || 0;
-      if (cd > 0 && timeLeft > 0 && timeLeft <= cd) beep(300, .06);
+      const cd = effectiveCountdown(b);
+      if (cd > 0 && timeLeft > 0 && timeLeft <= cd) {
+        beep(300, .06);
+        // Spoken countdown on rest only — work already has visual/beep while holding.
+        if (b.type === 'rest') speak(String(timeLeft));
+      }
       if (timeLeft <= 0) {
         beep(520, .12);
         blockIdx++;
@@ -1413,7 +1425,7 @@
       if (blockIdx >= flat.length) return;
       const b = flat[blockIdx];
       const type = b.type;
-      const cd = b.countdown_last || 0;
+      const cd = effectiveCountdown(b);
       const isCd = cd > 0 && timeLeft <= cd;
 
       document.getElementById('timerBg').className = `timer-bg ${type}`;
@@ -1757,8 +1769,9 @@
         block.label = labels.work;
         if (tokenCountdown > 0) block.countdown_last = tokenCountdown;
       }
-      if (type === 'rest' && restLabelRaw) {
-        block.label = normalizeCompactLabel(restLabelRaw);
+      if (type === 'rest') {
+        if (restLabelRaw) block.label = normalizeCompactLabel(restLabelRaw);
+        if (tokenCountdown > 0) block.countdown_last = tokenCountdown;
       }
       if (skipOnLast) block.skip_on_last = true;
 
