@@ -538,6 +538,136 @@
       font-size: 13px
     }
 
+    /* flow overview — top left on timer */
+    .flow-btn {
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top));
+      left: 16px;
+      z-index: 20;
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      background: rgba(0, 0, 0, .3);
+      color: rgba(255, 255, 255, .75);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .06em;
+      cursor: pointer;
+    }
+
+    .flow-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, .72);
+      align-items: flex-end;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .flow-modal-backdrop.open {
+      display: flex
+    }
+
+    .flow-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px 14px 0 0;
+      width: min(560px, 100%);
+      max-height: min(78vh, 640px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flow-modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 16px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-modal-header h2 {
+      margin: 0;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+
+    .flow-modal-meta {
+      font-size: 11px;
+      color: var(--sub);
+      margin-top: 2px;
+    }
+
+    .flow-modal-close {
+      background: none;
+      border: none;
+      color: var(--sub);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .flow-modal-body {
+      overflow-y: auto;
+      padding: 10px 16px 28px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+
+    .flow-row.current {
+      border-color: rgba(255, 255, 255, .45);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .flow-row.done {
+      opacity: .45
+    }
+
+    .flow-bar {
+      width: 3px;
+      height: 36px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .flow-type {
+      font-size: 10px;
+      letter-spacing: .1em;
+    }
+
+    .flow-label {
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .flow-dur {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -1041,6 +1171,136 @@
       font-size: 13px
     }
 
+    /* flow overview — top left on timer */
+    .flow-btn {
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top));
+      left: 16px;
+      z-index: 20;
+      height: 40px;
+      padding: 0 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      background: rgba(0, 0, 0, .3);
+      color: rgba(255, 255, 255, .75);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .06em;
+      cursor: pointer;
+    }
+
+    .flow-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, .72);
+      align-items: flex-end;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .flow-modal-backdrop.open {
+      display: flex
+    }
+
+    .flow-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px 14px 0 0;
+      width: min(560px, 100%);
+      max-height: min(78vh, 640px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flow-modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 16px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .flow-modal-header h2 {
+      margin: 0;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+
+    .flow-modal-meta {
+      font-size: 11px;
+      color: var(--sub);
+      margin-top: 2px;
+    }
+
+    .flow-modal-close {
+      background: none;
+      border: none;
+      color: var(--sub);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .flow-modal-body {
+      overflow-y: auto;
+      padding: 10px 16px 28px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+
+    .flow-row.current {
+      border-color: rgba(255, 255, 255, .45);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .flow-row.done {
+      opacity: .45
+    }
+
+    .flow-bar {
+      width: 3px;
+      height: 36px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .flow-type {
+      font-size: 10px;
+      letter-spacing: .1em;
+    }
+
+    .flow-label {
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .flow-dur {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
     /* ── DONE ── */
     #doneScreen {
       display: none;
@@ -1145,6 +1405,8 @@
     <div class="timer-bg" id="timerBg"></div>
     <div class="timer-paused-overlay" id="pausedOverlay">PAUSED</div>
 
+    <button class="flow-btn" id="flowBtn" type="button" onclick="openFlowModal()">Flow</button>
+
     <button class="stop-btn" id="stopBtn">
       <div class="stop-ring" id="stopRing"></div>
       <div class="stop-icon">✕</div>
@@ -1162,6 +1424,19 @@
 
     <div class="timer-prog-wrap">
       <div class="timer-prog-fill" id="timerProg" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="flow-modal-backdrop" id="flowModal" role="presentation" onclick="closeFlowModal()">
+    <div class="flow-modal" role="dialog" aria-modal="true" aria-labelledby="flowModalTitle" onclick="event.stopPropagation()">
+      <div class="flow-modal-header">
+        <div>
+          <h2 id="flowModalTitle">Flow</h2>
+          <div class="flow-modal-meta" id="flowModalMeta"></div>
+        </div>
+        <button type="button" class="flow-modal-close" onclick="closeFlowModal()" aria-label="Close">×</button>
+      </div>
+      <div class="flow-modal-body" id="flowModalBody"></div>
     </div>
   </div>
 
@@ -1375,6 +1650,43 @@
       speechSynthesis.speak(u);
     }
 
+    function openFlowModal() {
+      if (!flat.length) return;
+      const TYPE_COLOR = { prepare: 'var(--prepare)', work: 'var(--work)', rest: 'var(--rest)' };
+      const TYPE_LABEL = { prepare: 'PREPARE', work: 'WORK', rest: 'REST' };
+      const name = routine?.name || 'Flow';
+      document.getElementById('flowModalTitle').textContent = name;
+      document.getElementById('flowModalMeta').textContent =
+        `${blockIdx + 1} / ${flat.length} · tap outside to close`;
+
+      let html = '';
+      let prevSet = 0;
+      flat.forEach((b, i) => {
+        if (b.totalSets > 1 && b.setNum !== prevSet) {
+          prevSet = b.setNum;
+          html += `<div style="font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin:14px 0 6px">Set ${b.setNum} / ${b.totalSets}</div>`;
+        }
+        const state = i < blockIdx ? 'done' : i === blockIdx ? 'current' : '';
+        html += `<div class="flow-row ${state}">
+      <div class="flow-bar" style="background:${TYPE_COLOR[b.type]}"></div>
+      <div style="flex:1;min-width:0">
+        <div class="flow-type" style="color:${TYPE_COLOR[b.type]}">${TYPE_LABEL[b.type]}${i === blockIdx ? ' · NOW' : ''}</div>
+        <div class="flow-label">${b.label || '—'}</div>
+      </div>
+      <div class="flow-dur">${b.duration}s</div>
+    </div>`;
+      });
+      document.getElementById('flowModalBody').innerHTML = html;
+      document.getElementById('flowModal').classList.add('open');
+
+      const currentRow = document.querySelector('#flowModalBody .flow-row.current');
+      if (currentRow) currentRow.scrollIntoView({ block: 'center' });
+    }
+
+    function closeFlowModal() {
+      document.getElementById('flowModal').classList.remove('open');
+    }
+
     function startBlock() {
       if (blockIdx >= flat.length) { finish(); return; }
       const b = flat[blockIdx];
@@ -1397,9 +1709,11 @@
     // Rest needs a hop-back-on cue even when the routine omitted countdown_last.
     // Short transition rests (under 20s) stay quiet so they don't beep the whole cue.
     function effectiveCountdown(b) {
-      if (b.countdown_last > 0) return b.countdown_last;
-      if (b.type === 'rest' && b.duration >= 20) return Math.min(10, b.duration - 1);
-      return 0;
+      // Work/prepare: use explicit countdown_last from the routine.
+      if (b.type !== 'rest') return b.countdown_last > 0 ? b.countdown_last : 0;
+      // Rest: last 5s beeps only (hop-back-on). Short transitions stay quiet.
+      if (b.duration < 10) return 0;
+      return Math.min(5, b.duration - 1);
     }
 
     function tick() {
@@ -1407,11 +1721,7 @@
       timeLeft--; elapsed++;
       const b = flat[blockIdx];
       const cd = effectiveCountdown(b);
-      if (cd > 0 && timeLeft > 0 && timeLeft <= cd) {
-        beep(300, .06);
-        // Spoken countdown on rest only — work already has visual/beep while holding.
-        if (b.type === 'rest') speak(String(timeLeft));
-      }
+      if (cd > 0 && timeLeft > 0 && timeLeft <= cd) beep(300, .06);
       if (timeLeft <= 0) {
         beep(520, .12);
         blockIdx++;
@@ -1497,6 +1807,9 @@
       btn.addEventListener('mouseleave', cancelStopHold);
       btn.addEventListener('touchend', cancelStopHold);
 	      btn.addEventListener('touchcancel', cancelStopHold);
+	      document.addEventListener('keydown', e => {
+	        if (e.key === 'Escape') closeFlowModal();
+	      });
 	    });
 
 	    document.addEventListener('visibilitychange', () => {
@@ -1541,6 +1854,7 @@
       clearInterval(ticker);
       speechSynthesis.cancel();
       releaseWakeLock();
+      closeFlowModal();
       document.getElementById('timerScreen').classList.remove('active');
       document.getElementById('home').style.display = 'flex';
       // reset state
@@ -1551,6 +1865,7 @@
       clearInterval(ticker);
       speechSynthesis.cancel();
       releaseWakeLock();
+      closeFlowModal();
       document.getElementById('timerScreen').classList.remove('active');
       document.getElementById('doneScreen').classList.add('active');
       document.getElementById('doneSub').textContent = `${routine.name} · ${fmtDur(totalTime)}`;
