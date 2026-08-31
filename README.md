@@ -1,32 +1,31 @@
-# timer/
+# interval-timer
 
-A URL-driven interval timer built for mobile. No backend, no dependencies, and no routine-file workflow required.
+URL-driven **interval timer** for mobile — turns compact routine strings into prepare / work / rest blocks with spoken cues.
 
-Live at: `https://0xbn.github.io/interval-timer/`
+No backend, no npm runtime deps for the timer itself, no routine-file workflow required for normal use.
 
-## How It Works
+**Live:** https://0xbn.github.io/interval-timer/
 
-The app runs a routine from a compact URL parameter or from compact text pasted into the home screen.
+Related:
 
-Internally, the timer still uses blocks of:
+- [`workout`](https://github.com/0xBN/workout) — training program + coaching (source of truth for what to train)  
+- [`life-ops`](https://github.com/0xBN/life-ops) — ops playbook (points here)
+
+## How it works
+
+Pass a compact routine in the `x` query param, or paste the same text on the home screen.
+
+Blocks:
+
 - `prepare`
 - `work`
 - `rest`
 
-But you no longer need to author raw JSON routine files for normal use.
+Designed **audio-first**: follow without watching the screen; put setup/transition speech in the compact string. Use unlabeled `rest` only for quiet recovery.
 
-The format is designed to be audio-first:
-- a user should be able to follow the routine without watching the screen
-- spoken setup and transition cues should stay explicit in the compact string
-- only use unlabeled `rest` blocks for true quiet recovery periods
+## Main format
 
-## Main Format
-
-Use the `x` query parameter for a compact routine string.
-
-Use `@N` inside tokens whenever a block needs a countdown.
-
-Example:
+Use `@N` inside tokens when a block needs a countdown.
 
 ```text
 https://0xbn.github.io/interval-timer/?x=Abrahangs~4-finger%20half%20crimp~p5@3,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20,w10@3,r20
@@ -38,83 +37,70 @@ General shape:
 ?x=Routine Name~Label Section 1~Pattern 1~Label Section 2~Pattern 2
 ```
 
-## Compact Routine Grammar
-
-Each routine is:
+## Compact routine grammar
 
 ```text
 Routine Name~Label~pattern~Label^Prepare Label~pattern
 ```
 
 Rules:
+
 - `~` separates routine sections
 - a label section is followed by one pattern section
-- `Label` means the same text is used for prepare and work
-- `Work Label^Prepare Label` lets prepare speech differ from the work label
+- `Label` — same text for prepare and work
+- `Work Label^Prepare Label` — prepare speech differs from the work label
 
 Pattern tokens:
-- `p5` = prepare 5 seconds
-- `p5@3` = prepare 5 seconds with `countdown_last: 3`
-- `w10` = work 10 seconds
-- `w10@10` = work 10 seconds with `countdown_last: 10`
-- `r20` = rest 20 seconds
-- `r6^Switch to left side` = rest 6 seconds with spoken cue `Switch to left side`
-- `r10!` = rest 10 seconds with `skip_on_last`
 
-Repeated blocks should be written explicitly.
+- `p5` / `p5@3` — prepare (optional countdown last N)
+- `w10` / `w10@10` — work
+- `r20` — rest
+- `r6^Switch to left side` — rest with spoken cue
+- `r10!` — rest with `skip_on_last`
 
-Example:
-- `p5@3,w10@3,r20,w10@3,r20,w10@3`
+Write repeated blocks explicitly, e.g. `p5@3,w10@3,r20,w10@3,r20,w10@3`.
 
 Audio-first example:
-- `Single leg bridge^Right side ready~p5@3,w30@10,r6^Switch to left side,w30@10,r10^Rest!`
 
-## Speech Behavior
+```text
+Single leg bridge^Right side ready~p5@3,w30@10,r6^Switch to left side,w30@10,r10^Rest!
+```
+
+## Speech behavior
 
 - `prepare` speaks the prepare label
 - `work` speaks `Start`
 - `rest` speaks its label if present, otherwise `Rest`
-- `countdown_last` is set explicitly per token with `@N`
+- `countdown_last` via `@N` on the token
 
-Guideline:
-- if a transition matters for hands-free use, encode it as a spoken prepare label or a spoken rest cue
+If a transition matters hands-free, encode it as a spoken prepare label or spoken rest cue.
 
-## Home Screen
+## Home screen
 
-The home screen now supports:
-- built-in routines loaded from [routines-catalog.json](/abs/path/C:/Users/Brian%20Nguyen/code/test/interval-timer/routines-catalog.json)
-- pasted compact routine text
-- direct launch from URL
+- Built-in routines from `routines-catalog.json`
+- Pasted compact routine text
+- Direct launch from URL
 
 ## Catalog
 
-[routines-catalog.json](/abs/path/C:/Users/Brian%20Nguyen/code/test/interval-timer/routines-catalog.json) is the consolidated routine source kept in the repo.
+`routines-catalog.json` is the consolidated routine source in-repo: built-in library, bridge from older JSON files, and a reference for compact URLs.
 
-It exists mainly as:
-- a built-in routine library
-- a migration bridge from the older JSON-file setup
-- a reference source for converting routines to compact URLs
+## LLM usage
 
-## LLM Usage
+Use `llm-compact-routine-instructions.txt` when asking an LLM to generate routines (format, Abrahangs example, prompt template).
 
-Use [llm-compact-routine-instructions.txt](/abs/path/C:/Users/Brian%20Nguyen/code/test/interval-timer/llm-compact-routine-instructions.txt) when asking an LLM to generate new routines.
+## Abrahangs example
 
-That file includes:
-- the exact compact format
-- an Abrahangs example
-- a reusable prompt template
+See `abrahangs-url-example.txt` for before/after URL comparison and a compact Abrahangs URL.
 
-## Abrahangs Example
+## Legacy
 
-See [abrahangs-url-example.txt](/abs/path/C:/Users/Brian%20Nguyen/code/test/interval-timer/abrahangs-url-example.txt) for:
-- before/after URL comparison
-- exact character counts
-- a compact URL version of Abrahangs
+Older `?r=` JSON URLs still work; preferred format is `?x=...`.
 
-## Legacy Note
+## Local dev
 
-The app still accepts the older `?r=` JSON URL format for compatibility, but the intended format going forward is:
-
-```text
-?x=...
+```bash
+npx --yes serve .
 ```
+
+Deploy: GitHub Pages (`https://0xbn.github.io/interval-timer/`).
